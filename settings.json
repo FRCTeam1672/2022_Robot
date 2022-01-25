@@ -1,6 +1,10 @@
 {
-    "java.configuration.updateBuildConfiguration": "automatic",
-    "java.debug.settings.hotCodeReplace": "auto",
-    "java.format.settings.url": "google-formatter.xml",
-    "java.format.settings.profile": "GoogleStyle"
+    "[java]": {
+        // Editor Config
+        "editor.formatOnSave": true,
+
+        // Redhat Config
+        "java.format.settings.url": "google-formatter.xml",
+        "java.format.settings.profile": "GoogleStyle"
+    }
 }
