@@ -1,0 +1,10 @@
+{
+    "[java]": {
+        // Editor Config
+        "editor.formatOnSave": true,
+
+        // Redhat Config
+        "java.format.settings.url": "google-formatter.xml",
+        "java.format.settings.profile": "GoogleStyle"
+    }
+}
