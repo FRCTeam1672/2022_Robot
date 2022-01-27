@@ -1,13 +1,10 @@
 package frc.robot;
 
+import java.util.Map.Entry;
 import java.util.HashMap;
 import java.util.function.BooleanSupplier;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.PS4Controller.Button;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class Controls {
@@ -35,12 +32,31 @@ public class Controls {
         }
     }
 
-    public void mapButtons() {
-
+    public void bindButton(Buttons button, InputType inputType, Command command) {
+        bindButton(button, inputType, () -> command.execute());
     }
 
     public void periodic() {
+        for (Entry<Buttons, Runnable> entry : onPress.entrySet())
+        {
+            if (entry.getKey().pressed.getAsBoolean()) {
+                entry.getValue().run();
+            }
+        } 
 
+        for (Entry<Buttons, Runnable> entry : onHold.entrySet())
+        {
+            if (entry.getKey().held.getAsBoolean()) {
+                entry.getValue().run();
+            }
+        } 
+
+        for (Entry<Buttons, Runnable> entry : onRelease.entrySet())
+        {
+            if (entry.getKey().released.getAsBoolean()) {
+                entry.getValue().run();
+            }
+        } 
     }
 
     public enum InputType
