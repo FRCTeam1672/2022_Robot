@@ -47,4 +47,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     this.drive.arcadeDrive(x, y);
   }
+
+  public void move(double x, double y) {
+    this.drive.arcadeDrive(x, y);
+  }
 }
