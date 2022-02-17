@@ -9,7 +9,15 @@ package frc.robot;
  * constants. This class should not be used for any other purpose. All constants should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {}
+public final class Constants {
+    public class Drive {
+        public static final int FRONT_LEFT = 0;
+        public static final int FRONT_RIGHT = 1;
+        public static final int BACK_LEFT = 2;
+        public static final int BACK_RIGHT = 3;
+    }
+}
