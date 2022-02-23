@@ -17,6 +17,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   private DifferentialDrive drive;
 
+  // Remove XboxController Later
   private XboxController xController;
   // private PIDController pidController;
 
@@ -35,9 +36,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     this.drive = new DifferentialDrive(frontLeft, frontRight);
     this.xController = new XboxController(0);
-
-    // Constructor W/out Period Also Exists
-    // this.pidController = new PIDController(kp, ki, kd, period);
   }
 
   @Override
@@ -48,7 +46,7 @@ public class DriveSubsystem extends SubsystemBase {
     this.drive.arcadeDrive(x, y);
   }
 
-  public void move(double x, double y) {
-    this.drive.arcadeDrive(x, y);
+  public void move(double x, double z) {
+    this.drive.arcadeDrive(x, z);
   }
 }

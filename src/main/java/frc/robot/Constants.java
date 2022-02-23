@@ -20,4 +20,17 @@ public final class Constants {
         public static final int BACK_LEFT = 2;
         public static final int BACK_RIGHT = 3;
     }
+
+    public class Climb {
+        public static final int LEFT = 4;
+        public static final int CENTER = 5;
+        public static final int RIGHT = 6;
+
+        // Change This Later
+        public static final int SOLENOID_ID = 0;
+    }
+
+    public class Controller {
+        public static final int PORT = 0;
+    }
 }
