@@ -26,6 +26,10 @@ public final class Constants {
         public static final int CENTER = 5;
         public static final int RIGHT = 6;
 
+        public static final double ZERO = 0.0;
+        public static final double MAX_FORWARDS = 1.0;
+        public static final double MAX_BACKWARDS = -1.0;
+
         // Change This Later
         public static final int SOLENOID_ID = 0;
     }
