@@ -35,6 +35,20 @@ public final class Constants {
     }
 
     public class Controller {
-        public static final int PORT = 0;
+        public static final int MAIN = 0;
+        public static final int CLIMB = 1;
+    }
+
+    public class Shooter {
+        public static final int INTAKE_MOTOR_PORT = 11;
+        public static final int GUIDE_MOTOR_PORT = 12;
+        public static final int FLYWHEEL_MOTOR_PORT = 13;
+        public static final int SOLENOID_ID = 4;
+
+        public class Speed {
+            public static final double SLOW = 0.5;
+            public static final double MEDIUM = 0.75;
+            public static final double HIGH = 1.0;
+        }
     }
 }

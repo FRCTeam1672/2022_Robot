@@ -7,11 +7,14 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import frc.robot.Constants.Shooter;
 import frc.robot.Controls.Buttons;
 import frc.robot.Controls.InputType;
 import frc.robot.commands.MoveForwardCommand;
+import frc.robot.commands.ShootCargoCommand;
+import frc.robot.commands.IntakeCargoCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,8 +25,11 @@ import frc.robot.subsystems.DriveSubsystem;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_exampleSubsystem = new DriveSubsystem();
+  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 
   private final MoveForwardCommand m_autoCommand = new MoveForwardCommand(m_exampleSubsystem);
+  private final ShootCargoCommand shootCargoCommand = new ShootCargoCommand(shooterSubsystem);
+  private final IntakeCargoCommand intakeCargoCommand = new IntakeCargoCommand(shooterSubsystem);
 
   private final Controls controls = new Controls();
 
@@ -41,7 +47,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Configure Button Bindings Here
-    //controls.bindButton(Buttons.P1_B, InputType.HELD, );
+    controls.bindButton(Buttons.P1_RB, InputType.HELD, shootCargoCommand);
+    controls.bindButton(Buttons.P1_LB, InputType.HELD, intakeCargoCommand);
   }
 
   /**

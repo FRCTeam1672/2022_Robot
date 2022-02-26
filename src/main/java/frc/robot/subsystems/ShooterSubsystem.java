@@ -35,29 +35,6 @@ public class ShooterSubsystem extends SubsystemBase {
             currentSpeed = 0;
     }
 
-    public void shoot() {
-        shoot(speeds[currentSpeed]);
-    }
-
-    public void shoot(double speed) {
-        flywheelMotor.set(speed);
-        // TODO Wait for motor to get up to speed
-    }
-
-    /**
-     * Extends the solenoid which extends the arm. Nothing will happen if it is already extended
-     */
-    public void extendArm() {
-        solenoid.set(true);
-    }
-
-    /**
-     * Retracts the solenoid which extends the arm. Nothing will happen if it is already retracted
-     */
-    public void retractArm() {
-        solenoid.set(false);
-    }
-
     public WPI_VictorSPX getIntakeMotor() {
         return intakeMotor;
     }
