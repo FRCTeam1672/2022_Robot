@@ -22,7 +22,6 @@ public class ExtendArmsCommand extends CommandBase {
     @Override
     public void execute() {
         this.climbSystem.getLeftMotor().set(Climb.MAX_BACKWARDS);
-        this.climbSystem.getCenterMotor().set(Climb.MAX_BACKWARDS);
         this.climbSystem.getRightMotor().set(Climb.MAX_BACKWARDS);
     }
 
@@ -30,7 +29,6 @@ public class ExtendArmsCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         this.climbSystem.getLeftMotor().set(Climb.ZERO);
-        this.climbSystem.getCenterMotor().set(Climb.ZERO);
         this.climbSystem.getRightMotor().set(Climb.ZERO);
     }
 

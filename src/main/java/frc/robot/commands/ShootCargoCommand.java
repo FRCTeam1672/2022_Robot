@@ -6,6 +6,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShootCargoCommand extends CommandBase {
     private final ShooterSubsystem shooter;
+    private boolean aimAssist = true;
 
     public ShootCargoCommand(ShooterSubsystem subsystem) {
         this.shooter = subsystem;
@@ -19,9 +20,20 @@ public class ShootCargoCommand extends CommandBase {
         shooter.getFlywheelMotor().setSelectedSensorPosition(0);
     }
 
+    public void toggleAimAssist() {
+        if (aimAssist) {
+            aimAssist = false;
+        } else {
+            aimAssist = true;
+        }
+    }
+
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        if (aimAssist) {
+
+        }
         shooter.getFlywheelMotor().set(Constants.Shooter.Speed.HIGH);
         System.out.println(shooter.getFlywheelMotor().getSelectedSensorPosition());
     }

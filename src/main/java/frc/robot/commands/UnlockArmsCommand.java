@@ -19,7 +19,7 @@ public class UnlockArmsCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        this.climbSystem.getSolenoid().toggle();
+        this.climbSystem.getSolenoid().set(false);
     }
 
     // Called once the command ends or is interrupted.

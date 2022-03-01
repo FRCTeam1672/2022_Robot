@@ -15,20 +15,20 @@ package frc.robot;
  */
 public final class Constants {
     public class Drive {
-        public static final int FRONT_LEFT = 0;
-        public static final int FRONT_RIGHT = 1;
-        public static final int BACK_LEFT = 2;
-        public static final int BACK_RIGHT = 3;
+        public static final int FRONT_LEFT = 5;
+        public static final int FRONT_RIGHT = 3;
+        public static final int BACK_LEFT = 4;
+        public static final int BACK_RIGHT = 2;
     }
 
     public class Climb {
-        public static final int LEFT = 4;
-        public static final int CENTER = 5;
-        public static final int RIGHT = 6;
+        public static final int LEFT = 22;
+        public static final int CENTER = 23;
+        public static final int RIGHT = 21;
 
         public static final double ZERO = 0.0;
-        public static final double MAX_FORWARDS = 1.0;
-        public static final double MAX_BACKWARDS = -1.0;
+        public static final double MAX_FORWARDS = -1.0;
+        public static final double MAX_BACKWARDS = 1.0;
 
         // Change This Later
         public static final int SOLENOID_ID = 0;

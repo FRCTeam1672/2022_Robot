@@ -331,7 +331,7 @@ public class VisionPipeline {
                 // attempt to account for changing position of tape to be tried and reviewed on 2/23
 
                 // changed from point to ppoint
-                mopHull.put(j, 0, ppoint);
+                mopHull.put(j, 0, point);
             }
             final double solid = 100 * area / Imgproc.contourArea(mopHull);
             if (solid < solidity[0] || solid > solidity[1])
