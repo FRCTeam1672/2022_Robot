@@ -16,7 +16,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private Solenoid solenoid;
 
     double currentSpeed = 1;
-
+    double LOW = 0.65;
 
     public ShooterSubsystem() {
         init();
@@ -32,7 +32,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void toggleSpeed() {
-        currentSpeed = currentSpeed == 1 ? 0.5 : 1;
+        currentSpeed = currentSpeed == 1 ? LOW : 1;
         SmartDashboard.putString("Shooter Speed", getShooterSpeed());
     }
 
