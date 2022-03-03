@@ -45,7 +45,8 @@ public class RobotContainer {
       new RetractOuterArmsCommand(climbSubsystem);
   private final UndoArmsCommand undoArmsCommand = new UndoArmsCommand(climbSubsystem);
 
-  private final MoveForwardCommand moveForwardCommand = new MoveForwardCommand(driveSubsystem);
+  private final MoveForwardCommand moveForwardCommand =
+      new MoveForwardCommand(driveSubsystem, shooterSubsystem);
 
   private final UnclogCargoCommand unclogCargoCommand = new UnclogCargoCommand(shooterSubsystem);
 
@@ -89,7 +90,6 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return moveForwardCommand;
   }
-
 
   public void teleopPeriodic() {
     if (controller.getLeftBumper())

@@ -4,16 +4,20 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
 public class MoveForwardCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem driveSystem;
+  private final ShooterSubsystem shooter;
 
-  public MoveForwardCommand(DriveSubsystem subsystem) {
+  public MoveForwardCommand(DriveSubsystem subsystem, ShooterSubsystem shooter) {
     this.driveSystem = subsystem;
+    this.shooter = shooter;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -24,19 +28,35 @@ public class MoveForwardCommand extends CommandBase {
     this.driveSystem.getFrontLeft().setSelectedSensorPosition(0);
   }
 
+
+  private final int MOVED = 8000;
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.driveSystem.move(0.5, 0);
+    if (Math.abs(this.driveSystem.getFrontLeft().getSelectedSensorPosition()) < MOVED) {
+      this.driveSystem.move(0.5, 0);
+    } else {
+      shooter.getFlywheelMotor().set(shooter.getCurrentSpeed());
+      shooter.getFlywheelMotor().setSelectedSensorPosition(0);
+
+      if (shooter.getFlywheelMotor().getSelectedSensorPosition() > 4 * MOVED) {
+        shooter.getGuideMotor().set(Constants.Shooter.Speed.MEDIUM);
+      }
+    }
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    shooter.getFlywheelMotor().set(0);
+    shooter.getGuideMotor().set(0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.driveSystem.getFrontLeft().getSelectedSensorPosition() > 8000;
+    return shooter.getFlywheelMotor().getSelectedSensorPosition() > 7 * MOVED;
   }
 }
