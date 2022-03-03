@@ -26,6 +26,8 @@ public class MoveForwardCommand extends CommandBase {
   @Override
   public void initialize() {
     this.driveSystem.getFrontLeft().setSelectedSensorPosition(0);
+    this.shooter.getFlywheelMotor().setSelectedSensorPosition(0);
+    this.shooter.getSolenoid().set(false);
   }
 
 
@@ -34,13 +36,14 @@ public class MoveForwardCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Math.abs(this.driveSystem.getFrontLeft().getSelectedSensorPosition()) < MOVED) {
-      this.driveSystem.move(0.5, 0);
+    if (Math.abs(this.driveSystem.getFrontLeft().getSelectedSensorPosition()) < MOVED * 2.5) {
+      this.driveSystem.move(-0.7, 0);
     } else {
       shooter.getFlywheelMotor().set(shooter.getCurrentSpeed());
       shooter.getFlywheelMotor().setSelectedSensorPosition(0);
+      this.shooter.getSolenoid().set(true);
 
-      if (shooter.getFlywheelMotor().getSelectedSensorPosition() > 4 * MOVED) {
+      if (Math.abs(shooter.getFlywheelMotor().getSelectedSensorPosition()) > 2000) {
         shooter.getGuideMotor().set(Constants.Shooter.Speed.MEDIUM);
       }
     }
@@ -57,6 +60,6 @@ public class MoveForwardCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return shooter.getFlywheelMotor().getSelectedSensorPosition() > 7 * MOVED;
+    return false;
   }
 }
