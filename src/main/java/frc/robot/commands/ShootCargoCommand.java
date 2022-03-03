@@ -36,7 +36,7 @@ public class ShootCargoCommand extends CommandBase {
         }
         // if (shooter.getFlywheelMotor().getSelectedSensorPosition() < -4096 * 15)
         // shooter.getGuideMotor().set(Constants.Shooter.Speed.HIGH);
-        shooter.getFlywheelMotor().set(Constants.Shooter.Speed.HIGH);
+        shooter.getFlywheelMotor().set(shooter.getCurrentSpeed());
         System.out.println(shooter.getFlywheelMotor().getSelectedSensorVelocity());
     }
 

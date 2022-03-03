@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooter;
 import frc.robot.Constants.Shooter.Speed;
@@ -14,8 +15,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private WPI_TalonSRX flywheelMotor;
     private Solenoid solenoid;
 
-    int currentSpeed = 0;
-    final double[] speeds = {Speed.SLOW, Speed.MEDIUM, Speed.HIGH};
+    double currentSpeed = 1;
+
 
     public ShooterSubsystem() {
         init();
@@ -31,10 +32,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void toggleSpeed() {
-        if (currentSpeed < 2)
-            currentSpeed++;
-        else
-            currentSpeed = 0;
+        currentSpeed = currentSpeed == 1 ? 0.5 : 1;
+        SmartDashboard.putString("Shooter Speed", getShooterSpeed());
     }
 
     public WPI_VictorSPX getIntakeMotor() {
@@ -53,4 +52,11 @@ public class ShooterSubsystem extends SubsystemBase {
         return solenoid;
     }
 
+    public String getShooterSpeed() {
+        return currentSpeed == 1 ? "HIGH" : "LOW";
+    }
+
+    public double getCurrentSpeed() {
+        return currentSpeed;
+    }
 }

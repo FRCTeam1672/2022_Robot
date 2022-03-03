@@ -17,6 +17,7 @@ import frc.robot.commands.RetractOuterArmsCommand;
 import frc.robot.commands.ShootCargoCommand;
 import frc.robot.commands.ToggleIntakeCommand;
 import frc.robot.commands.UnclogCargoCommand;
+import frc.robot.commands.UndoArmsCommand;
 import frc.robot.commands.ExtendArmsCommand;
 import frc.robot.commands.IntakeCargoCommand;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -42,6 +43,7 @@ public class RobotContainer {
   private final ExtendArmsCommand extendArmsCommand = new ExtendArmsCommand(climbSubsystem);
   private final RetractOuterArmsCommand retractOuterArmsCommand =
       new RetractOuterArmsCommand(climbSubsystem);
+  private final UndoArmsCommand undoArmsCommand = new UndoArmsCommand(climbSubsystem);
 
   private final MoveForwardCommand moveForwardCommand = new MoveForwardCommand(driveSubsystem);
 
@@ -59,7 +61,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    SmartDashboard.putNumber("Solenoids", pcm.getSolenoids());
+    SmartDashboard.putString("Shooter Speed", shooterSubsystem.getShooterSpeed());
   }
 
   /**
@@ -115,12 +117,20 @@ public class RobotContainer {
       toggleIntakeCommand.execute();
     }
 
+    if (controller.getXButtonPressed()) {
+      shooterSubsystem.toggleSpeed();
+    }
+
     if (hangController.getAButtonPressed()) {
       extendArmsCommand.schedule();
     }
 
     if (hangController.getBButtonPressed()) {
       retractOuterArmsCommand.schedule();
+    }
+
+    if (hangController.getBackButtonPressed()) {
+      undoArmsCommand.schedule();
     }
   }
 }
