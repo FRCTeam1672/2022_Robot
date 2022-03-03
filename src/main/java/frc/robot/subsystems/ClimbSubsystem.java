@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -27,6 +28,9 @@ public class ClimbSubsystem extends SubsystemBase {
     private int nextCommand = 0;
     private final int MID_CLIMB_MAX = 1;
 
+    private boolean running = false;
+    private CommandBase current = commands[0];
+
     public ClimbSubsystem() {
         this.left = new WPI_TalonSRX(Climb.LEFT);
         this.center = new WPI_TalonSRX(Climb.CENTER);
@@ -35,6 +39,7 @@ public class ClimbSubsystem extends SubsystemBase {
         this.right.setInverted(true);
 
         this.solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Climb.SOLENOID_ID);
+        this.centerSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Climb.CENTER_SOLENOID_ID);
     }
 
     public WPI_TalonSRX getLeftMotor() {
@@ -62,5 +67,20 @@ public class ClimbSubsystem extends SubsystemBase {
             return null;
 
         return commands[nextCommand++];
+    }
+
+    public void runNextCommand(boolean high) {
+        running = true;
+        current = nextCommand(high);
+    }
+
+    @Override
+    public void periodic() {
+        if (running) {
+            if (!current.isFinished())
+                current.execute();
+
+            running = !current.isFinished();
+        }
     }
 }

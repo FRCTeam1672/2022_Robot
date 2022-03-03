@@ -15,15 +15,23 @@ public class RetractOuterArmsCommand extends CommandBase {
 
     // Called when the command is initially scheduled.
     @Override
-    public void initialize() {}
+    public void initialize() {
+        this.climbSystem.getCenterSolenoid().toggle();
+        this.climbSystem.getLeftMotor().setSelectedSensorPosition(0);
+        this.climbSystem.getRightMotor().setSelectedSensorPosition(0);
+    }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        this.climbSystem.getCenterSolenoid().set(false);
+        boolean left = !(Math.abs(this.climbSystem.getLeftMotor()
+                .getSelectedSensorPosition()) > Climb.OUTER_CLIMB_REVS + 850);
 
-        this.climbSystem.getLeftMotor().set(Climb.MAX_FORWARDS);
-        this.climbSystem.getRightMotor().set(Climb.MAX_FORWARDS);
+        boolean right = !(Math.abs(this.climbSystem.getRightMotor()
+                .getSelectedSensorPosition()) > Climb.OUTER_CLIMB_REVS + 1000);
+
+        this.climbSystem.getLeftMotor().set(left ? Climb.MAX_BACKWARDS * 0.5 : 0);
+        this.climbSystem.getRightMotor().set(right ? Climb.MAX_BACKWARDS * 0.5 : 0);
     }
 
     // Called once the command ends or is interrupted.
@@ -36,6 +44,10 @@ public class RetractOuterArmsCommand extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return Math
+                .abs(this.climbSystem.getLeftMotor()
+                        .getSelectedSensorPosition()) > Climb.OUTER_CLIMB_REVS + 850
+                && Math.abs(this.climbSystem.getRightMotor()
+                        .getSelectedSensorPosition()) > Climb.OUTER_CLIMB_REVS + 1000;
     }
 }

@@ -26,6 +26,8 @@ public class ShooterSubsystem extends SubsystemBase {
         guideMotor = new WPI_VictorSPX(Shooter.GUIDE_MOTOR_PORT);
         flywheelMotor = new WPI_TalonSRX(Shooter.FLYWHEEL_MOTOR_PORT);
         solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Shooter.SOLENOID_ID);
+
+        flywheelMotor.setInverted(true);
     }
 
     public void toggleSpeed() {

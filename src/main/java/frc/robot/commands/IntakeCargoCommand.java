@@ -25,9 +25,8 @@ public class IntakeCargoCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        shooter.getIntakeMotor().set(Constants.Shooter.Speed.MEDIUM);
-        shooter.getGuideMotor().set(Constants.Shooter.Speed.MEDIUM);
-        solenoid.toggle();
+        shooter.getIntakeMotor().set(0.85);
+        shooter.getGuideMotor().set(0.42);
     }
 
     // Called once the command ends or is interrupted.
@@ -35,7 +34,6 @@ public class IntakeCargoCommand extends CommandBase {
     public void end(boolean interrupted) {
         shooter.getIntakeMotor().set(0);
         shooter.getGuideMotor().set(0);
-        solenoid.toggle();
     }
 
     // Returns true when the command should end.

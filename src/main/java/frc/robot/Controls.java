@@ -17,6 +17,10 @@ public class Controls {
         HashMap<Buttons, Runnable> onHold = new HashMap<Buttons, Runnable>();
         HashMap<Buttons, Runnable> onRelease = new HashMap<Buttons, Runnable>();
 
+        public void bindButtonHeld(Buttons button, Command command) {
+                bindButton(button, InputType.HELD, command);
+        }
+
         public void bindButton(Buttons button, InputType inputType, Runnable command) {
                 if (inputType == InputType.HELD) {
                         onHold.put(button, command);
@@ -29,8 +33,10 @@ public class Controls {
 
         public void bindButton(Buttons button, InputType inputType, Command command) {
                 bindButton(button, inputType, () -> command.execute());
-                if (inputType == InputType.HELD)
-                        bindButton(button, inputType, () -> command.end(false));
+                if (inputType == InputType.HELD) {
+                        bindButton(button, InputType.PRESSED, () -> command.initialize());
+                        bindButton(button, InputType.RELEASED, () -> command.end(false));
+                }
         }
 
         public void periodic() {
@@ -113,5 +119,9 @@ public class Controls {
                         this.held = held;
                         this.released = released;
                 }
+        }
+
+        public static XboxController getDriveController() {
+                return player1;
         }
 }

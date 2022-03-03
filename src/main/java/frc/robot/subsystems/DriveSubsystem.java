@@ -1,10 +1,12 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Drive;
 
@@ -34,19 +36,28 @@ public class DriveSubsystem extends SubsystemBase {
     this.backLeft.follow(this.frontLeft);
     this.backRight.follow(this.frontRight);
 
+    this.frontLeft.setNeutralMode(NeutralMode.Brake);
+    this.frontRight.setNeutralMode(NeutralMode.Brake);
+    this.backLeft.setNeutralMode(NeutralMode.Brake);
+    this.backRight.setNeutralMode(NeutralMode.Brake);
+
     this.drive = new DifferentialDrive(frontLeft, frontRight);
     this.xController = new XboxController(0);
   }
 
   @Override
   public void periodic() {
-    double x = this.xController.getLeftX();
-    double y = this.xController.getRightY();
+    double x = -0.65 * this.xController.getLeftY();
+    double y = 0.75 * this.xController.getRightX();
 
     this.drive.arcadeDrive(x, y);
   }
 
   public void move(double x, double z) {
     this.drive.arcadeDrive(x, z);
+  }
+
+  public WPI_TalonSRX getFrontLeft() {
+    return frontLeft;
   }
 }

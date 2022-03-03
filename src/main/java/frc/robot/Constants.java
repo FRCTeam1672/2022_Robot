@@ -15,10 +15,10 @@ package frc.robot;
  */
 public final class Constants {
     public class Drive {
-        public static final int FRONT_LEFT = 5;
-        public static final int FRONT_RIGHT = 3;
-        public static final int BACK_LEFT = 4;
-        public static final int BACK_RIGHT = 2;
+        public static final int FRONT_LEFT = 4;
+        public static final int FRONT_RIGHT = 2;
+        public static final int BACK_LEFT = 5;
+        public static final int BACK_RIGHT = 3;
     }
 
     public class Climb {
@@ -31,7 +31,10 @@ public final class Constants {
         public static final double MAX_BACKWARDS = 1.0;
 
         // Change This Later
-        public static final int SOLENOID_ID = 0;
+        public static final int SOLENOID_ID = 4;
+        public static final int CENTER_SOLENOID_ID = 5;
+
+        public static final int OUTER_CLIMB_REVS = 13000;
     }
 
     public class Controller {
@@ -43,7 +46,7 @@ public final class Constants {
         public static final int INTAKE_MOTOR_PORT = 11;
         public static final int GUIDE_MOTOR_PORT = 12;
         public static final int FLYWHEEL_MOTOR_PORT = 13;
-        public static final int SOLENOID_ID = 4;
+        public static final int SOLENOID_ID = 6;
 
         public class Speed {
             public static final double SLOW = 0.5;

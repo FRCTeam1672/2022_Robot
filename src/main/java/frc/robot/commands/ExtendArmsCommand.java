@@ -16,13 +16,19 @@ public class ExtendArmsCommand extends CommandBase {
 
     // Called when the command is initially scheduled.
     @Override
-    public void initialize() {}
+    public void initialize() {
+        this.climbSystem.getLeftMotor().setSelectedSensorPosition(0);
+        this.climbSystem.getRightMotor().setSelectedSensorPosition(0);
+    }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        this.climbSystem.getLeftMotor().set(Climb.MAX_BACKWARDS);
-        this.climbSystem.getRightMotor().set(Climb.MAX_BACKWARDS);
+        this.climbSystem.getLeftMotor().set(Climb.MAX_FORWARDS / 5);
+        this.climbSystem.getRightMotor().set(Climb.MAX_FORWARDS / 5);
+
+        System.out.print(this.climbSystem.getLeftMotor().getSelectedSensorPosition() + " ");
+        System.out.println(this.climbSystem.getRightMotor().getSelectedSensorPosition());
     }
 
     // Called once the command ends or is interrupted.
@@ -35,6 +41,10 @@ public class ExtendArmsCommand extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return Math
+                .abs(this.climbSystem.getLeftMotor()
+                        .getSelectedSensorPosition()) > Climb.OUTER_CLIMB_REVS
+                || Math.abs(this.climbSystem.getRightMotor()
+                        .getSelectedSensorPosition()) > Climb.OUTER_CLIMB_REVS;
     }
 }
