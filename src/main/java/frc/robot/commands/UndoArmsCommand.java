@@ -24,8 +24,8 @@ public class UndoArmsCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        this.climbSystem.getLeftMotor().set(Climb.MAX_FORWARDS / 5);
-        this.climbSystem.getRightMotor().set(Climb.MAX_FORWARDS / 5);
+        this.climbSystem.getLeftMotor().set(Climb.MAX_FORWARDS / 2);
+        this.climbSystem.getRightMotor().set(Climb.MAX_FORWARDS / 2);
 
         System.out.print(this.climbSystem.getLeftMotor().getSelectedSensorPosition() + " ");
         System.out.println(this.climbSystem.getRightMotor().getSelectedSensorPosition());
@@ -41,7 +41,7 @@ public class UndoArmsCommand extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return Math.abs(this.climbSystem.getLeftMotor().getSelectedSensorPosition()) > 300
-                || Math.abs(this.climbSystem.getRightMotor().getSelectedSensorPosition()) > 300;
+        return Math.abs(this.climbSystem.getLeftMotor().getSelectedSensorPosition()) > 900
+                || Math.abs(this.climbSystem.getRightMotor().getSelectedSensorPosition()) > 900;
     }
 }

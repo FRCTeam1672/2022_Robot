@@ -24,8 +24,8 @@ public class ExtendArmsCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        this.climbSystem.getLeftMotor().set(Climb.MAX_FORWARDS / 3);
-        this.climbSystem.getRightMotor().set(Climb.MAX_FORWARDS / 3);
+        this.climbSystem.getLeftMotor().set(Climb.MAX_FORWARDS * 0.66);
+        this.climbSystem.getRightMotor().set(Climb.MAX_FORWARDS * 0.66);
 
         System.out.print(this.climbSystem.getLeftMotor().getSelectedSensorPosition() + " ");
         System.out.println(this.climbSystem.getRightMotor().getSelectedSensorPosition());

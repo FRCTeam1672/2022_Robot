@@ -16,7 +16,7 @@ public class RetractOuterArmsCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        this.climbSystem.getCenterSolenoid().toggle();
+        // NO MIDDLE this.climbSystem.getCenterSolenoid().toggle();
         this.climbSystem.getLeftMotor().setSelectedSensorPosition(0);
         this.climbSystem.getRightMotor().setSelectedSensorPosition(0);
     }

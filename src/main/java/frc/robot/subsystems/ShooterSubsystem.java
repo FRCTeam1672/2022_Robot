@@ -15,8 +15,9 @@ public class ShooterSubsystem extends SubsystemBase {
     private WPI_TalonSRX flywheelMotor;
     private Solenoid solenoid;
 
-    double currentSpeed = 1;
     double LOW = 0.65;
+    double HIGH = 1;
+    double currentSpeed = HIGH;
 
     public ShooterSubsystem() {
         init();
@@ -32,7 +33,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void toggleSpeed() {
-        currentSpeed = currentSpeed == 1 ? LOW : 1;
+        currentSpeed = currentSpeed == HIGH ? LOW : HIGH;
         SmartDashboard.putString("Shooter Speed", getShooterSpeed());
     }
 
@@ -53,7 +54,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public String getShooterSpeed() {
-        return currentSpeed == 1 ? "HIGH" : "LOW";
+        return currentSpeed == HIGH ? "HIGH" : "LOW";
     }
 
     public double getCurrentSpeed() {

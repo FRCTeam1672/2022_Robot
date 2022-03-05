@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.sql.Driver;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.XboxController;
@@ -62,6 +63,8 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+    // add SendableChooser for auto command to run
+
     SmartDashboard.putString("Shooter Speed", shooterSubsystem.getShooterSpeed());
   }
 
@@ -117,8 +120,12 @@ public class RobotContainer {
       toggleIntakeCommand.execute();
     }
 
-    if (controller.getXButtonPressed()) {
+    if (hangController.getStartButtonPressed()) {
       shooterSubsystem.toggleSpeed();
+    }
+
+    if (controller.getRightStickButtonPressed()) {
+      driveSubsystem.toggleDirection();
     }
 
     if (hangController.getAButtonPressed()) {
@@ -131,6 +138,27 @@ public class RobotContainer {
 
     if (hangController.getBackButtonPressed()) {
       undoArmsCommand.schedule();
+    }
+
+    if (hangController.getLeftBumper()) {
+      climbSubsystem.getLeftMotor().set(0.45);
+    }
+    if (hangController.getLeftBumperReleased()) {
+      climbSubsystem.getLeftMotor().set(0);
+    }
+
+    if (hangController.getRightBumper()) {
+      climbSubsystem.getRightMotor().set(0.45);
+    }
+    if (hangController.getRightBumperReleased()) {
+      climbSubsystem.getRightMotor().set(0);
+    }
+
+    if (hangController.getXButton()) {
+      driveSubsystem.changeSpeed(0.1);
+    }
+    if (hangController.getYButton()) {
+      driveSubsystem.changeSpeed(-0.1);
     }
   }
 }
