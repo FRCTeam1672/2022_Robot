@@ -4,16 +4,13 @@
 
 package frc.robot;
 
-import java.sql.Driver;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.Shooter;
-import frc.robot.Controls.Buttons;
-import frc.robot.Controls.InputType;
 import frc.robot.commands.MoveForwardCommand;
+import frc.robot.commands.RetractInnerArmCommand;
 import frc.robot.commands.RetractOuterArmsCommand;
 import frc.robot.commands.ShootCargoCommand;
 import frc.robot.commands.ToggleIntakeCommand;
@@ -42,16 +39,14 @@ public class RobotContainer {
   private final IntakeCargoCommand intakeCargoCommand = new IntakeCargoCommand(shooterSubsystem);
 
   private final ExtendArmsCommand extendArmsCommand = new ExtendArmsCommand(climbSubsystem);
-  private final RetractOuterArmsCommand retractOuterArmsCommand =
-      new RetractOuterArmsCommand(climbSubsystem);
   private final UndoArmsCommand undoArmsCommand = new UndoArmsCommand(climbSubsystem);
+  private final RetractInnerArmCommand retractInnerArmCommand =
+      new RetractInnerArmCommand(climbSubsystem);
 
   private final MoveForwardCommand moveForwardCommand =
       new MoveForwardCommand(driveSubsystem, shooterSubsystem);
 
   private final UnclogCargoCommand unclogCargoCommand = new UnclogCargoCommand(shooterSubsystem);
-
-  private final Controls controls = new Controls();
 
   private final PneumaticsControlModule pcm = new PneumaticsControlModule(0);
 
@@ -133,7 +128,7 @@ public class RobotContainer {
     }
 
     if (hangController.getBButtonPressed()) {
-      retractOuterArmsCommand.schedule();
+      retractInnerArmCommand.schedule();
     }
 
     if (hangController.getBackButtonPressed()) {
@@ -152,6 +147,10 @@ public class RobotContainer {
     }
     if (hangController.getRightBumperReleased()) {
       climbSubsystem.getRightMotor().set(0);
+    }
+
+    if (hangController.getLeftBumperPressed() || hangController.getRightBumperPressed()) {
+      climbSubsystem.getCenterSolenoid().set(true);
     }
 
     if (hangController.getXButton()) {
