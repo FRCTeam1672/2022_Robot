@@ -26,7 +26,10 @@ Now we know what the vision pipeline class is, lets see how it processes.
 1. We first blur our image in order to get rid of any unnecessary noise which could interfere later on. It also removes a lot of the sharp edges which could make it hard to process.
 2. Now, in order to find the reflective tape, we must filter down the image to a specific threshold which contains the reflective tape. In order to achieve this, we use HSL (Hue, Saturation, Luminance) in order to find the reflective tape which fits our threshold.
 3. Now even though we filtered out a lot of stuff which doesn't fill the HSL threshold of the reflective tape, there are still a lot of items which still show up in the image. In order to filter this out, we convert the entire image to contours (curves), and do filtering to find a contour which best fits the reflective tape.
-4. Even after all of that, there is STILL some other objects that can flicker in or out, or just stay randomly for no reason. In order to help us filter this out, we then find all of the `Convex Hulls`. Finding convex hulls requires us to find all of the points on the contour, and draw a line on the edge of it.![A convex hull of a set of points](https://ars.els-cdn.com/content/image/3-s2.0-B9781785482434500050-f05-07-9781785482434.jpg)
+4. Even after all of that, there is STILL some other objects that can flicker in or out, or just stay randomly for no reason. In order to help us filter this out, we then find all of the `Convex Hulls`. Finding convex hulls requires us to find all of the points on the contour, and draw a line on the edge of it.
+
+     ![A convex hull of a set of points](https://ars.els-cdn.com/content/image/3-s2.0-B9781785482434500050-f05-07-9781785482434.jpg)
+
 5. Now that we have the convex hulls, it also allows us to re-filter everything with a new set of configurations. After this step, what we are left with is the reflective tape showing on the screen!
 
 Now that we have the reflective tape, we can pass this info back to the vision class to be interpreted.
