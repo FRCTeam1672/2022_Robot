@@ -14,14 +14,14 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public class Drive {
+    public static class Drive {
         public static final int FRONT_LEFT = 4;
         public static final int FRONT_RIGHT = 2;
         public static final int BACK_LEFT = 5;
         public static final int BACK_RIGHT = 3;
     }
 
-    public class Climb {
+    public static class Climb {
         public static final int LEFT = 22;
         public static final int CENTER = 23;
         public static final int RIGHT = 21;
@@ -37,18 +37,24 @@ public final class Constants {
         public static final int OUTER_CLIMB_REVS = 13000;
     }
 
-    public class Controller {
+    public static class Vision {
+        //TODO Ensure camera values are correct
+        public static final int CAMERA_IMG_WIDTH = 300;
+        public static final int CAMERA_IMG_HEIGHT = 500;
+    }
+
+    public static class Controller {
         public static final int MAIN = 0;
         public static final int CLIMB = 1;
     }
 
-    public class Shooter {
+    public static class Shooter {
         public static final int INTAKE_MOTOR_PORT = 11;
         public static final int GUIDE_MOTOR_PORT = 12;
         public static final int FLYWHEEL_MOTOR_PORT = 13;
         public static final int SOLENOID_ID = 6;
 
-        public class Speed {
+        public static class Speed {
             public static final double SLOW = 0.5;
             public static final double MEDIUM = 0.75;
             public static final double HIGH = 1.0;

@@ -4,14 +4,13 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.Shooter;
-import frc.robot.Controls.Buttons;
-import frc.robot.Controls.InputType;
 import frc.robot.commands.MoveForwardCommand;
 import frc.robot.commands.RetractOuterArmsCommand;
 import frc.robot.commands.ShootCargoCommand;
@@ -23,6 +22,7 @@ import frc.robot.commands.IntakeCargoCommand;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.vision.Vision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -57,11 +57,13 @@ public class RobotContainer {
   private final XboxController controller = new XboxController(0);
   private final XboxController hangController = new XboxController(1);
 
+  private Vision vision;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-
+    configureVision();
     SmartDashboard.putString("Shooter Speed", shooterSubsystem.getShooterSpeed());
   }
 
@@ -71,6 +73,11 @@ public class RobotContainer {
    * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
+  private void configureVision(){
+    UsbCamera camera1 = CameraServer.startAutomaticCapture();
+    UsbCamera camera2 = CameraServer.startAutomaticCapture();
+    vision = new Vision(camera1, driveSubsystem);
+  }
   private void configureButtonBindings() {
     // Configure Button Bindings Here
     // controls.bindButtonHeld(Buttons.P1_RB, shootCargoCommand);

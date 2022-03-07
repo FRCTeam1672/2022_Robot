@@ -53,6 +53,9 @@ public class DriveSubsystem extends SubsystemBase {
     this.drive.arcadeDrive(x, y);
   }
 
+  /**
+   * Calls the {@link DifferentialDrive#arcadeDrive(double, double)} method
+   */
   public void move(double x, double z) {
     this.drive.arcadeDrive(x, z);
   }
