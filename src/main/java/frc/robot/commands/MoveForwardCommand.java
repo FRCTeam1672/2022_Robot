@@ -59,6 +59,7 @@ public class MoveForwardCommand extends CommandBase {
   public void end(boolean interrupted) {
     shooter.getFlywheelMotor().set(0);
     shooter.getGuideMotor().set(0);
+    shooter.toggleSpeed();
   }
 
   // Returns true when the command should end.
