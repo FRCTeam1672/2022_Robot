@@ -78,7 +78,7 @@ public class RobotContainer {
   private void configureVision() {
     UsbCamera camera1 = CameraServer.startAutomaticCapture();
     UsbCamera camera2 = CameraServer.startAutomaticCapture();
-    vision = new Vision(camera1, driveSubsystem);
+    vision = new Vision(camera2, driveSubsystem);
   }
 
   private void configureButtonBindings() {
@@ -118,6 +118,10 @@ public class RobotContainer {
       unclogCargoCommand.execute();
     if (controller.getYButtonReleased())
       unclogCargoCommand.end(false);
+
+    if (controller.getXButtonPressed()) {
+      vision.findAndOrient();
+    }
 
     // if (controller.getAButtonPressed()) {
     // climbSubsystem.runNextCommand(false);
