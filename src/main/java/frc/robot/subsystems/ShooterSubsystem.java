@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooter;
-import frc.robot.Constants.Shooter.Speed;
 
 public class ShooterSubsystem extends SubsystemBase {
     private WPI_VictorSPX intakeMotor;
@@ -15,8 +14,9 @@ public class ShooterSubsystem extends SubsystemBase {
     private WPI_TalonSRX flywheelMotor;
     private Solenoid solenoid;
 
-    double currentSpeed = 1;
-    double LOW = 0.65;
+    double LOW = 0.5;
+    double HIGH = 1;
+    double currentSpeed = HIGH;
 
     public ShooterSubsystem() {
         init();
@@ -29,10 +29,13 @@ public class ShooterSubsystem extends SubsystemBase {
         solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Shooter.SOLENOID_ID);
 
         flywheelMotor.setInverted(true);
+
+        SmartDashboard.putString("Flywheel Speed",
+                flywheelMotor.getSelectedSensorVelocity() < -14300 ? "SHOOT" : "NO SHOOT");
     }
 
     public void toggleSpeed() {
-        currentSpeed = currentSpeed == 1 ? LOW : 1;
+        currentSpeed = currentSpeed == HIGH ? LOW : HIGH;
         SmartDashboard.putString("Shooter Speed", getShooterSpeed());
     }
 
@@ -53,10 +56,15 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public String getShooterSpeed() {
-        return currentSpeed == 1 ? "HIGH" : "LOW";
+        return currentSpeed == HIGH ? "HIGH" : "LOW";
     }
 
     public double getCurrentSpeed() {
         return currentSpeed;
+    }
+
+    public void periodic() {
+        SmartDashboard.putString("Flywheel Speed",
+                flywheelMotor.getSelectedSensorVelocity() < -15000 ? "SHOOT" : "NO SHOOT");
     }
 }

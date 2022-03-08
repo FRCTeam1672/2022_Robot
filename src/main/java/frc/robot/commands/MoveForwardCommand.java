@@ -14,6 +14,7 @@ public class MoveForwardCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem driveSystem;
   private final ShooterSubsystem shooter;
+  private boolean set = false;
 
   public MoveForwardCommand(DriveSubsystem subsystem, ShooterSubsystem shooter) {
     this.driveSystem = subsystem;
@@ -36,14 +37,17 @@ public class MoveForwardCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Math.abs(this.driveSystem.getFrontLeft().getSelectedSensorPosition()) < MOVED * 2.5) {
+    if (Math.abs(this.driveSystem.getFrontLeft().getSelectedSensorPosition()) < MOVED * 2.4) { // was=3
       this.driveSystem.move(-0.7, 0);
     } else {
       shooter.getFlywheelMotor().set(shooter.getCurrentSpeed());
-      shooter.getFlywheelMotor().setSelectedSensorPosition(0);
+      if (!set) {
+        shooter.getFlywheelMotor().setSelectedSensorPosition(0);
+        set = true;
+      }
       this.shooter.getSolenoid().set(true);
 
-      if (Math.abs(shooter.getFlywheelMotor().getSelectedSensorPosition()) > 2000) {
+      if (set && Math.abs(shooter.getFlywheelMotor().getSelectedSensorPosition()) > 400000) {
         shooter.getGuideMotor().set(Constants.Shooter.Speed.MEDIUM);
       }
     }
@@ -55,11 +59,12 @@ public class MoveForwardCommand extends CommandBase {
   public void end(boolean interrupted) {
     shooter.getFlywheelMotor().set(0);
     shooter.getGuideMotor().set(0);
+    shooter.toggleSpeed();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return shooter.getFlywheelMotor().getSelectedSensorPosition() > 2_600_000L;
   }
 }

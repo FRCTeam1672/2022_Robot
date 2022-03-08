@@ -1,21 +1,15 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class IntakeCargoCommand extends CommandBase {
     private final ShooterSubsystem shooter;
-    private final Constants constants;
-    private final Solenoid solenoid;
 
     public IntakeCargoCommand(ShooterSubsystem subsystem) {
         this.shooter = subsystem;
-        this.solenoid = shooter.getSolenoid();
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(subsystem);
-        constants = new Constants();
     }
 
     // Called when the command is initially scheduled.

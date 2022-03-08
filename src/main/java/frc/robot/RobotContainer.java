@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.MoveForwardCommand;
+import frc.robot.commands.RetractInnerArmCommand;
 import frc.robot.commands.RetractOuterArmsCommand;
 import frc.robot.commands.ShootCargoCommand;
 import frc.robot.commands.ToggleIntakeCommand;
@@ -41,16 +42,14 @@ public class RobotContainer {
   private final IntakeCargoCommand intakeCargoCommand = new IntakeCargoCommand(shooterSubsystem);
 
   private final ExtendArmsCommand extendArmsCommand = new ExtendArmsCommand(climbSubsystem);
-  private final RetractOuterArmsCommand retractOuterArmsCommand =
-      new RetractOuterArmsCommand(climbSubsystem);
   private final UndoArmsCommand undoArmsCommand = new UndoArmsCommand(climbSubsystem);
+  private final RetractInnerArmCommand retractInnerArmCommand =
+      new RetractInnerArmCommand(climbSubsystem);
 
   private final MoveForwardCommand moveForwardCommand =
       new MoveForwardCommand(driveSubsystem, shooterSubsystem);
 
   private final UnclogCargoCommand unclogCargoCommand = new UnclogCargoCommand(shooterSubsystem);
-
-  private final Controls controls = new Controls();
 
   private final PneumaticsControlModule pcm = new PneumaticsControlModule(0);
 
@@ -64,6 +63,9 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     configureVision();
+
+    // add SendableChooser for auto command to run
+
     SmartDashboard.putString("Shooter Speed", shooterSubsystem.getShooterSpeed());
   }
 
@@ -73,11 +75,12 @@ public class RobotContainer {
    * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureVision(){
+  private void configureVision() {
     UsbCamera camera1 = CameraServer.startAutomaticCapture();
     UsbCamera camera2 = CameraServer.startAutomaticCapture();
     vision = new Vision(camera1, driveSubsystem);
   }
+
   private void configureButtonBindings() {
     // Configure Button Bindings Here
     // controls.bindButtonHeld(Buttons.P1_RB, shootCargoCommand);
@@ -124,8 +127,12 @@ public class RobotContainer {
       toggleIntakeCommand.execute();
     }
 
-    if (controller.getXButtonPressed()) {
+    if (hangController.getStartButtonPressed()) {
       shooterSubsystem.toggleSpeed();
+    }
+
+    if (controller.getRightStickButtonPressed()) {
+      driveSubsystem.toggleDirection();
     }
 
     if (hangController.getAButtonPressed()) {
@@ -133,11 +140,36 @@ public class RobotContainer {
     }
 
     if (hangController.getBButtonPressed()) {
-      retractOuterArmsCommand.schedule();
+      retractInnerArmCommand.schedule();
     }
 
     if (hangController.getBackButtonPressed()) {
       undoArmsCommand.schedule();
+    }
+
+    if (hangController.getLeftBumper()) {
+      climbSubsystem.getLeftMotor().set(0.45);
+    }
+    if (hangController.getLeftBumperReleased()) {
+      climbSubsystem.getLeftMotor().set(0);
+    }
+
+    if (hangController.getRightBumper()) {
+      climbSubsystem.getRightMotor().set(0.45);
+    }
+    if (hangController.getRightBumperReleased()) {
+      climbSubsystem.getRightMotor().set(0);
+    }
+
+    if (hangController.getLeftBumperPressed() || hangController.getRightBumperPressed()) {
+      climbSubsystem.getCenterSolenoid().set(true);
+    }
+
+    if (hangController.getXButton()) {
+      driveSubsystem.changeSpeed(0.1);
+    }
+    if (hangController.getYButton()) {
+      driveSubsystem.changeSpeed(-0.1);
     }
   }
 }

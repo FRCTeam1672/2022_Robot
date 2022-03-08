@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import javax.swing.text.StyledEditorKit.BoldAction;
-import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
