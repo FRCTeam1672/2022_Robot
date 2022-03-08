@@ -1,10 +1,10 @@
-package frc.robot;
+package frc.robot.vision;
+
+import org.opencv.core.*;
+import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.lang.model.util.ElementScanner6;
-import org.opencv.core.*;
-import org.opencv.imgproc.*;
 
 /**
  * VisionPipeline class.
@@ -14,17 +14,16 @@ import org.opencv.imgproc.*;
  *
  * @author GRIP
  */
-public class VisionPipeline {
+public class VisionPipeline implements edu.wpi.first.vision.VisionPipeline {
 
-    // Outputs
-    private Mat blurOutput = new Mat();
-    private Mat hslThresholdOutput = new Mat();
-    private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
-    private ArrayList<MatOfPoint> filterContours0Output = new ArrayList<MatOfPoint>();
-    private ArrayList<MatOfPoint> convexHullsOutput = new ArrayList<MatOfPoint>();
-    private ArrayList<MatOfPoint> filterContours1Output = new ArrayList<MatOfPoint>();
-    // added to store previous point
-    private double[] ppoint;
+    //Outputs
+    private final Mat blurOutput = new Mat();
+    private final Mat hslThresholdOutput = new Mat();
+    private final ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
+    private final ArrayList<MatOfPoint> filterContours0Output = new ArrayList<MatOfPoint>();
+    private final ArrayList<MatOfPoint> convexHullsOutput = new ArrayList<MatOfPoint>();
+    private final ArrayList<MatOfPoint> filterContours1Output = new ArrayList<MatOfPoint>();
+
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
@@ -44,8 +43,7 @@ public class VisionPipeline {
         double[] hslThresholdHue = {35.611510791366904, 100.13651877133107};
         double[] hslThresholdSaturation = {62.18447375930894, 255.0};
         double[] hslThresholdLuminance = {146.76258992805754, 255.0};
-        hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation,
-                hslThresholdLuminance, hslThresholdOutput);
+        hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
 
         // Step Find_Contours0:
         Mat findContoursInput = hslThresholdOutput;
@@ -65,11 +63,7 @@ public class VisionPipeline {
         double filterContours0MinVertices = 7.0;
         double filterContours0MinRatio = 1.2;
         double filterContours0MaxRatio = 2.8;
-        filterContours(filterContours0Contours, filterContours0MinArea, filterContours0MinPerimeter,
-                filterContours0MinWidth, filterContours0MaxWidth, filterContours0MinHeight,
-                filterContours0MaxHeight, filterContours0Solidity, filterContours0MaxVertices,
-                filterContours0MinVertices, filterContours0MinRatio, filterContours0MaxRatio,
-                filterContours0Output);
+        filterContours(filterContours0Contours, filterContours0MinArea, filterContours0MinPerimeter, filterContours0MinWidth, filterContours0MaxWidth, filterContours0MinHeight, filterContours0MaxHeight, filterContours0Solidity, filterContours0MaxVertices, filterContours0MinVertices, filterContours0MinRatio, filterContours0MaxRatio, filterContours0Output);
 
         // Step Convex_Hulls0:
         ArrayList<MatOfPoint> convexHullsContours = filterContours0Output;
@@ -88,17 +82,13 @@ public class VisionPipeline {
         double filterContours1MinVertices = 8.0;
         double filterContours1MinRatio = 1.22;
         double filterContours1MaxRatio = 2.5;
-        filterContours(filterContours1Contours, filterContours1MinArea, filterContours1MinPerimeter,
-                filterContours1MinWidth, filterContours1MaxWidth, filterContours1MinHeight,
-                filterContours1MaxHeight, filterContours1Solidity, filterContours1MaxVertices,
-                filterContours1MinVertices, filterContours1MinRatio, filterContours1MaxRatio,
-                filterContours1Output);
+        filterContours(filterContours1Contours, filterContours1MinArea, filterContours1MinPerimeter, filterContours1MinWidth, filterContours1MaxWidth, filterContours1MinHeight, filterContours1MaxHeight, filterContours1Solidity, filterContours1MaxVertices, filterContours1MinVertices, filterContours1MinRatio, filterContours1MaxRatio, filterContours1Output);
 
     }
 
     /**
      * This method is a generated getter for the output of a Blur.
-     * 
+     *
      * @return Mat output from Blur.
      */
     public Mat blurOutput() {
@@ -107,7 +97,7 @@ public class VisionPipeline {
 
     /**
      * This method is a generated getter for the output of a HSL_Threshold.
-     * 
+     *
      * @return Mat output from HSL_Threshold.
      */
     public Mat hslThresholdOutput() {
@@ -116,7 +106,7 @@ public class VisionPipeline {
 
     /**
      * This method is a generated getter for the output of a Find_Contours.
-     * 
+     *
      * @return ArrayList<MatOfPoint> output from Find_Contours.
      */
     public ArrayList<MatOfPoint> findContoursOutput() {
@@ -125,7 +115,7 @@ public class VisionPipeline {
 
     /**
      * This method is a generated getter for the output of a Filter_Contours.
-     * 
+     *
      * @return ArrayList<MatOfPoint> output from Filter_Contours.
      */
     public ArrayList<MatOfPoint> filterContours0Output() {
@@ -134,7 +124,7 @@ public class VisionPipeline {
 
     /**
      * This method is a generated getter for the output of a Convex_Hulls.
-     * 
+     *
      * @return ArrayList<MatOfPoint> output from Convex_Hulls.
      */
     public ArrayList<MatOfPoint> convexHullsOutput() {
@@ -143,7 +133,7 @@ public class VisionPipeline {
 
     /**
      * This method is a generated getter for the output of a Filter_Contours.
-     * 
+     *
      * @return ArrayList<MatOfPoint> output from Filter_Contours.
      */
     public ArrayList<MatOfPoint> filterContours1Output() {
@@ -152,12 +142,12 @@ public class VisionPipeline {
 
 
     /**
-     * An indication of which type of filter to use for a blur. Choices are BOX, GAUSSIAN, MEDIAN,
-     * and BILATERAL
+     * An indication of which type of filter to use for a blur.
+     * Choices are BOX, GAUSSIAN, MEDIAN, and BILATERAL
      */
     enum BlurType {
-        BOX("Box Blur"), GAUSSIAN("Gaussian Blur"), MEDIAN("Median Filter"), BILATERAL(
-                "Bilateral Filter");
+        BOX("Box Blur"), GAUSSIAN("Gaussian Blur"), MEDIAN("Median Filter"),
+        BILATERAL("Bilateral Filter");
 
         private final String label;
 
@@ -185,13 +175,14 @@ public class VisionPipeline {
 
     /**
      * Softens an image using one of several filters.
-     * 
-     * @param input The image on which to perform the blur.
-     * @param type The blurType to perform.
+     *
+     * @param input        The image on which to perform the blur.
+     * @param type         The blurType to perform.
      * @param doubleRadius The radius for the blur.
-     * @param output The image in which to store the output.
+     * @param output       The image in which to store the output.
      */
-    private void blur(Mat input, BlurType type, double doubleRadius, Mat output) {
+    private void blur(Mat input, BlurType type, double doubleRadius,
+                      Mat output) {
         int radius = (int) (doubleRadius + 0.5);
         int kernelSize;
         switch (type) {
@@ -213,30 +204,15 @@ public class VisionPipeline {
         }
     }
 
-    /**
-     * Segment an image based on hue, saturation, and luminance ranges.
-     *
-     * @param input The image on which to perform the HSL threshold.
-     * @param hue The min and max hue
-     * @param sat The min and max saturation
-     * @param lum The min and max luminance
-     * @param output The image in which to store the output.
-     */
-    private void hslThreshold(Mat input, double[] hue, double[] sat, double[] lum, Mat out) {
+    private void hslThreshold(Mat input, double[] hue, double[] sat, double[] lum,
+                              Mat out) {
         Imgproc.cvtColor(input, out, Imgproc.COLOR_BGR2HLS);
-        Core.inRange(out, new Scalar(hue[0], lum[0], sat[0]), new Scalar(hue[1], lum[1], sat[1]),
-                out);
+        Core.inRange(out, new Scalar(hue[0], lum[0], sat[0]),
+                new Scalar(hue[1], lum[1], sat[1]), out);
     }
 
-    /**
-     * Sets the values of pixels in a binary image to their distance to the nearest black pixel.
-     * 
-     * @param input The image on which to perform the Distance Transform.
-     * @param type The Transform.
-     * @param maskSize the size of the mask.
-     * @param output The image in which to store the output.
-     */
-    private void findContours(Mat input, boolean externalOnly, List<MatOfPoint> contours) {
+    private void findContours(Mat input, boolean externalOnly,
+                              List<MatOfPoint> contours) {
         Mat hierarchy = new Mat();
         contours.clear();
         int mode;
@@ -251,11 +227,12 @@ public class VisionPipeline {
 
     /**
      * Compute the convex hulls of contours.
-     * 
-     * @param inputContours The contours on which to perform the operation.
+     *
+     * @param inputContours  The contours on which to perform the operation.
      * @param outputContours The contours where the output will be stored.
      */
-    private void convexHulls(List<MatOfPoint> inputContours, ArrayList<MatOfPoint> outputContours) {
+    private void convexHulls(List<MatOfPoint> inputContours,
+                             ArrayList<MatOfPoint> outputContours) {
         final MatOfInt hull = new MatOfInt();
         outputContours.clear();
         for (int i = 0; i < inputContours.size(); i++) {
@@ -265,7 +242,7 @@ public class VisionPipeline {
             mopHull.create((int) hull.size().height, 1, CvType.CV_32SC2);
             for (int j = 0; j < hull.size().height; j++) {
                 int index = (int) hull.get(j, 0)[0];
-                double[] point = new double[] {contour.get(index, 0)[0], contour.get(index, 0)[1]};
+                double[] point = new double[]{contour.get(index, 0)[0], contour.get(index, 0)[1]};
                 mopHull.put(j, 0, point);
             }
             outputContours.add(mopHull);
@@ -275,72 +252,48 @@ public class VisionPipeline {
 
     /**
      * Filters out contours that do not meet certain criteria.
-     * 
-     * @param inputContours is the input list of contours
-     * @param output is the the output list of contours
-     * @param minArea is the minimum area of a contour that will be kept
-     * @param minPerimeter is the minimum perimeter of a contour that will be kept
-     * @param minWidth minimum width of a contour
-     * @param maxWidth maximum width
-     * @param minHeight minimum height
-     * @param maxHeight maximimum height
-     * @param Solidity the minimum and maximum solidity of a contour
+     *
+     * @param inputContours  is the input list of contours
+     * @param output         is the the output list of contours
+     * @param minArea        is the minimum area of a contour that will be kept
+     * @param minPerimeter   is the minimum perimeter of a contour that will be kept
+     * @param minWidth       minimum width of a contour
+     * @param maxWidth       maximum width
+     * @param minHeight      minimum height
+     * @param maxHeight      maximimum height
      * @param minVertexCount minimum vertex Count of the contours
      * @param maxVertexCount maximum vertex Count
-     * @param minRatio minimum ratio of width to height
-     * @param maxRatio maximum ratio of width to height
+     * @param minRatio       minimum ratio of width to height
+     * @param maxRatio       maximum ratio of width to height
      */
-    private void filterContours(List<MatOfPoint> inputContours, double minArea, double minPerimeter,
-            double minWidth, double maxWidth, double minHeight, double maxHeight, double[] solidity,
-            double maxVertexCount, double minVertexCount, double minRatio, double maxRatio,
-            List<MatOfPoint> output) {
+    private void filterContours(List<MatOfPoint> inputContours, double minArea,
+                                double minPerimeter, double minWidth, double maxWidth, double minHeight, double
+                                        maxHeight, double[] solidity, double maxVertexCount, double minVertexCount, double
+                                        minRatio, double maxRatio, List<MatOfPoint> output) {
         final MatOfInt hull = new MatOfInt();
         output.clear();
-        // operation
+        //operation
         for (int i = 0; i < inputContours.size(); i++) {
             final MatOfPoint contour = inputContours.get(i);
             final Rect bb = Imgproc.boundingRect(contour);
-            if (bb.width < minWidth || bb.width > maxWidth)
-                continue;
-            if (bb.height < minHeight || bb.height > maxHeight)
-                continue;
+            if (bb.width < minWidth || bb.width > maxWidth) continue;
+            if (bb.height < minHeight || bb.height > maxHeight) continue;
             final double area = Imgproc.contourArea(contour);
-            if (area < minArea)
-                continue;
-            if (Imgproc.arcLength(new MatOfPoint2f(contour.toArray()), true) < minPerimeter)
-                continue;
+            if (area < minArea) continue;
+            if (Imgproc.arcLength(new MatOfPoint2f(contour.toArray()), true) < minPerimeter) continue;
             Imgproc.convexHull(contour, hull);
             MatOfPoint mopHull = new MatOfPoint();
             mopHull.create((int) hull.size().height, 1, CvType.CV_32SC2);
             for (int j = 0; j < hull.size().height; j++) {
                 int index = (int) hull.get(j, 0)[0];
-                double[] point = new double[] {contour.get(index, 0)[0], contour.get(index, 0)[1]};
-                // if(ppoint==null)
-                // {
-                // ppoint = point;
-                // }
-                // else if(point==null)
-                // {
-                // ppoint=null;
-                // }
-                // else
-                // if((point[0]*.95<=ppoint[0]||point[0]*1.05>=ppoint[0])&&((point[1]*.95<=ppoint[1]||point[1]*1.05>=ppoint[1]))
-                // {
-                // ppoint=point;
-                // }
-                // attempt to account for changing position of tape to be tried and reviewed on 2/23
-
-                // changed from point to ppoint
+                double[] point = new double[]{contour.get(index, 0)[0], contour.get(index, 0)[1]};
                 mopHull.put(j, 0, point);
             }
             final double solid = 100 * area / Imgproc.contourArea(mopHull);
-            if (solid < solidity[0] || solid > solidity[1])
-                continue;
-            if (contour.rows() < minVertexCount || contour.rows() > maxVertexCount)
-                continue;
+            if (solid < solidity[0] || solid > solidity[1]) continue;
+            if (contour.rows() < minVertexCount || contour.rows() > maxVertexCount) continue;
             final double ratio = bb.width / (double) bb.height;
-            if (ratio < minRatio || ratio > maxRatio)
-                continue;
+            if (ratio < minRatio || ratio > maxRatio) continue;
             output.add(contour);
         }
     }

@@ -65,6 +65,9 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Drive Speed", 0.65 + mod);
   }
 
+  /**
+   * Calls the {@link DifferentialDrive#arcadeDrive(double, double)} method
+   */
   public void move(double x, double z) {
     this.drive.arcadeDrive(x, z);
   }
