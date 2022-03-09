@@ -166,7 +166,7 @@ public class RobotContainer {
     }
 
     if (hangController.getLeftBumperPressed() || hangController.getRightBumperPressed()) {
-      climbSubsystem.getCenterSolenoid().set(true);
+      // climbSubsystem.getCenterSolenoid().set(true);
     }
 
     if (hangController.getXButton()) {
