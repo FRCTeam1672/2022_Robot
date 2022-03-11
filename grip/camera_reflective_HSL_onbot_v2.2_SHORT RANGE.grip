@@ -4,7 +4,7 @@
       <property name="path" value="C:\Users\Robotics\Documents\Retro_reflective_example.png"/>
     </grip:ImageFile>
     <grip:Camera>
-      <property name="deviceNumber" value="0"/>
+      <property name="address" value="http://172.22.11.2:1182/?action=stream"/>
     </grip:Camera>
   </sources>
   <steps>
@@ -23,22 +23,22 @@
       <grip:Input step="1" socket="1">
         <value>
           <double>35.611510791366904</double>
-          <double>100.13651877133107</double>
+          <double>92.45733788395906</double>
         </value>
       </grip:Input>
       <grip:Input step="1" socket="2">
         <value>
-          <double>62.18447375930894</double>
+          <double>48.156474820143885</double>
           <double>255.0</double>
         </value>
       </grip:Input>
       <grip:Input step="1" socket="3">
         <value>
-          <double>146.76258992805754</double>
-          <double>255.0</double>
+          <double>136.76258992805754</double>
+          <double>233.24232081911262</double>
         </value>
       </grip:Input>
-      <grip:Output step="1" socket="0" previewed="false"/>
+      <grip:Output step="1" socket="0" previewed="true"/>
     </grip:Step>
     <grip:Step name="Find Contours">
       <grip:Input step="2" socket="0"/>
@@ -50,40 +50,40 @@
     <grip:Step name="Filter Contours">
       <grip:Input step="3" socket="0"/>
       <grip:Input step="3" socket="1">
-        <value>13.0</value>
+        <value>10.0</value>
       </grip:Input>
       <grip:Input step="3" socket="2">
-        <value>2.0</value>
-      </grip:Input>
-      <grip:Input step="3" socket="3">
         <value>6.0</value>
       </grip:Input>
+      <grip:Input step="3" socket="3">
+        <value>2.0</value>
+      </grip:Input>
       <grip:Input step="3" socket="4">
-        <value>64.0</value>
+        <value>70.0</value>
       </grip:Input>
       <grip:Input step="3" socket="5">
-        <value>11.0</value>
+        <value>0.0</value>
       </grip:Input>
       <grip:Input step="3" socket="6">
-        <value>69.0</value>
+        <value>74.0</value>
       </grip:Input>
       <grip:Input step="3" socket="7">
         <value>
-          <double>82.73381294964031</double>
+          <double>52.07666897335128</double>
           <double>100.0</double>
         </value>
       </grip:Input>
       <grip:Input step="3" socket="8">
-        <value>46.0</value>
+        <value>38.0</value>
       </grip:Input>
       <grip:Input step="3" socket="9">
-        <value>7.0</value>
+        <value>2.0</value>
       </grip:Input>
       <grip:Input step="3" socket="10">
-        <value>1.2</value>
+        <value>0.0</value>
       </grip:Input>
       <grip:Input step="3" socket="11">
-        <value>2.8</value>
+        <value>7.8</value>
       </grip:Input>
       <grip:Output step="3" socket="0" previewed="true"/>
     </grip:Step>
@@ -91,71 +91,27 @@
       <grip:Input step="4" socket="0"/>
       <grip:Output step="4" socket="0" previewed="true"/>
     </grip:Step>
-    <grip:Step name="Filter Contours">
-      <grip:Input step="5" socket="0"/>
-      <grip:Input step="5" socket="1">
-        <value>0</value>
-      </grip:Input>
-      <grip:Input step="5" socket="2">
-        <value>3.0</value>
-      </grip:Input>
-      <grip:Input step="5" socket="3">
-        <value>23.0</value>
-      </grip:Input>
-      <grip:Input step="5" socket="4">
-        <value>100.0</value>
-      </grip:Input>
-      <grip:Input step="5" socket="5">
-        <value>11.0</value>
-      </grip:Input>
-      <grip:Input step="5" socket="6">
-        <value>1000</value>
-      </grip:Input>
-      <grip:Input step="5" socket="7">
-        <value>
-          <double>100.0</double>
-          <double>100.0</double>
-        </value>
-      </grip:Input>
-      <grip:Input step="5" socket="8">
-        <value>20.0</value>
-      </grip:Input>
-      <grip:Input step="5" socket="9">
-        <value>8.0</value>
-      </grip:Input>
-      <grip:Input step="5" socket="10">
-        <value>1.22</value>
-      </grip:Input>
-      <grip:Input step="5" socket="11">
-        <value>2.5</value>
-      </grip:Input>
-      <grip:Output step="5" socket="0" previewed="true"/>
-    </grip:Step>
   </steps>
   <connections>
     <grip:Connection>
-      <grip:Output step="0" socket="0" previewed="true"/>
-      <grip:Input step="1" socket="0"/>
+      <grip:Output step="2" socket="0" previewed="false"/>
+      <grip:Input step="3" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="1" socket="0" previewed="true"/>
+      <grip:Input step="2" socket="0"/>
     </grip:Connection>
     <grip:Connection>
       <grip:Output source="1" socket="0" previewed="false"/>
       <grip:Input step="0" socket="0"/>
     </grip:Connection>
     <grip:Connection>
-      <grip:Output step="4" socket="0" previewed="true"/>
-      <grip:Input step="5" socket="0"/>
+      <grip:Output step="0" socket="0" previewed="true"/>
+      <grip:Input step="1" socket="0"/>
     </grip:Connection>
     <grip:Connection>
       <grip:Output step="3" socket="0" previewed="true"/>
       <grip:Input step="4" socket="0"/>
-    </grip:Connection>
-    <grip:Connection>
-      <grip:Output step="2" socket="0" previewed="false"/>
-      <grip:Input step="3" socket="0"/>
-    </grip:Connection>
-    <grip:Connection>
-      <grip:Output step="1" socket="0" previewed="false"/>
-      <grip:Input step="2" socket="0"/>
     </grip:Connection>
   </connections>
   <settings>
@@ -171,8 +127,8 @@
     <language>Java</language>
     <className>GripPipeline</className>
     <implementWpilibPipeline>true</implementWpilibPipeline>
-    <saveDir>C:\Users\Robotics\GRIP\2022_GRIP_VISON_TEST</saveDir>
-    <packageName>frc.robot</packageName>
+    <saveDir>C:\Users\Robotics\GRIP\Compiled Classes</saveDir>
+    <packageName>frc.robot.vision</packageName>
     <moduleName>grip</moduleName>
   </codeGenerationSettings>
 </grip:Pipeline>
