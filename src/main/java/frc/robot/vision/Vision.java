@@ -50,7 +50,7 @@ public class Vision {
 
         // Reuse the same mat because creating a new one is rly costly
         Mat mat = new Mat();
-
+        Scalar color = new Scalar(0, 0, 255);
         VisionThread visionThread = new VisionThread(camera, visionPipeline, pipeline -> {
             // If we cannot grab a frame, return and send an error message
             if (cvSink.grabFrame(mat) == 0) {
@@ -75,11 +75,12 @@ public class Vision {
                 synchronized (imgLock){
                     centerX = averageCenter;
                 }
-                //CANNOT PUT POINT ONTO THE SMART DASHBOARD
-                //RIP
+                double y = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0)).y;
+                Point point1 = new Point(averageCenter - 5, y - 5);
+                Point point2 = new Point(averageCenter + 5, y + 5);
+                Imgproc.rectangle(cloneMat, point1, point2, color, 2);
             }
-            // If there is no contour detected (pipeline doesn't see anything, we set the centerX to
-            // 0.0
+            // If there is no contour detected (pipeline doesn't see anything, we set the centerX to 0.0
             // We also reset the mat to show the current stream so the rectangle goes away
             else {
                 centerX = 0.0;
