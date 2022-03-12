@@ -6,17 +6,14 @@ import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
+import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
-import static frc.robot.Constants.Vision.*;
 import java.util.ArrayList;
+
+import static frc.robot.Constants.Vision.CAMERA_IMG_HEIGHT;
+import static frc.robot.Constants.Vision.CAMERA_IMG_WIDTH;
 
 /**
  * Handles the entire vision system
@@ -66,30 +63,28 @@ public class Vision {
             Mat cloneMat = mat.clone();
 
             if (!pipeline.filterContoursOutput().isEmpty()) {
-                for (MatOfPoint points : pipeline.findContoursOutput()) {
-                    System.out.println("<!> Found contour <!>");
-                    Rect r = Imgproc.boundingRect(points);
-                    Scalar detectColor = new Scalar(0, 0, 255);
-                    Imgproc.rectangle(cloneMat, new Point(r.x, r.y),
-                            new Point(r.x + r.width, r.y + r.height), detectColor, 2);
+                final ArrayList<Double> rectangleCenters = new ArrayList<>();
+                pipeline.filterContoursOutput().forEach(matOfPoint -> {
+                    Rect r = Imgproc.boundingRect(matOfPoint);
+                    synchronized (imgLock){
+                        double recCenter = r.x + r.width / 2.0;
+                        rectangleCenters.add(recCenter);
+                    }
+                });
+                double averageCenter = Math.getDeviationWeightedAverage(rectangleCenters);
+                synchronized (imgLock){
+                    centerX = averageCenter;
                 }
-                // synchronized (imgLock) {
-                // centerX = r.x + r.width / 3.55;
-                // }
-
+                //CANNOT PUT POINT ONTO THE SMART DASHBOARD
+                //RIP
             }
             // If there is no contour detected (pipeline doesn't see anything, we set the centerX to
             // 0.0
             // We also reset the mat to show the current stream so the rectangle goes away
             else {
-                System.out.println("No contour found");
                 centerX = 0.0;
-                // cloneMat = mat;
+                cloneMat = mat;
             }
-
-            System.out.println(pipeline.findContoursOutput().size() + " - find contour output");
-            // HSL:
-            // outputStream.putFrame(pipeline.hslThresholdOutput().clone());
             outputStream.putFrame(cloneMat);
         });
         visionThread.start();
