@@ -71,7 +71,7 @@ public class Vision {
                         rectangleCenters.add(recCenter);
                     }
                 });
-                double averageCenter = Math.getDeviationWeightedAverage(rectangleCenters);
+                double averageCenter = VisionMathUtils.getDeviationWeightedAverage(rectangleCenters);
                 synchronized (imgLock){
                     centerX = averageCenter;
                 }
