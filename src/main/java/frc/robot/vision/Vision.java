@@ -9,12 +9,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import static frc.robot.Constants.Vision.*;
+import java.util.ArrayList;
 
 /**
  * Handles the entire vision system
@@ -46,41 +48,48 @@ public class Vision {
     private void initVisionSystem() {
         visionPipeline = new VisionPipeline();
         CvSink cvSink = CameraServer.getVideo(camera);
-        CvSource outputStream =
-                CameraServer.putVideo("Camera", CAMERA_IMG_WIDTH, CAMERA_IMG_HEIGHT);
+        CvSource outputStream = CameraServer.putVideo("Vision Pipeline Camera", CAMERA_IMG_WIDTH,
+                CAMERA_IMG_HEIGHT);
 
         // Reuse the same mat because creating a new one is rly costly
         Mat mat = new Mat();
-        VisionThread visionThread = new VisionThread(camera, visionPipeline, pipeline -> {
-            // Copies the old mat, so we can show the rectangle on it for the driver and does not
-            // interfere with the pipeline
-            Mat cloneMat = mat.clone();
 
+        VisionThread visionThread = new VisionThread(camera, visionPipeline, pipeline -> {
             // If we cannot grab a frame, return and send an error message
             if (cvSink.grabFrame(mat) == 0) {
                 System.out.println(
                         "<!> [VISION SYSTEM] Could not pull frame from the CameraServer (cvSink) <!>");
                 return;
             }
-            pipeline.process(mat);
+            // Copies the old mat, so we can show the rectangle on it for the driver and does not
+            // interfere with the pipeline
+            Mat cloneMat = mat.clone();
 
-            if (!pipeline.filterContours1Output().isEmpty()) {
-                Rect r = Imgproc.boundingRect(pipeline.filterContours1Output().get(0));
-                Scalar detectColor = new Scalar(0, 0, 255);
-                Imgproc.rectangle(cloneMat, new Point(r.x, r.y),
-                        new Point(r.x + r.width, r.y + r.height), detectColor, 2);
-                synchronized (imgLock) {
-                    centerX = r.x + r.width / 3.55;
+            if (!pipeline.filterContoursOutput().isEmpty()) {
+                for (MatOfPoint points : pipeline.findContoursOutput()) {
+                    System.out.println("<!> Found contour <!>");
+                    Rect r = Imgproc.boundingRect(points);
+                    Scalar detectColor = new Scalar(0, 0, 255);
+                    Imgproc.rectangle(cloneMat, new Point(r.x, r.y),
+                            new Point(r.x + r.width, r.y + r.height), detectColor, 2);
                 }
+                // synchronized (imgLock) {
+                // centerX = r.x + r.width / 3.55;
+                // }
 
             }
             // If there is no contour detected (pipeline doesn't see anything, we set the centerX to
             // 0.0
             // We also reset the mat to show the current stream so the rectangle goes away
             else {
+                System.out.println("No contour found");
                 centerX = 0.0;
-                cloneMat = mat;
+                // cloneMat = mat;
             }
+
+            System.out.println(pipeline.findContoursOutput().size() + " - find contour output");
+            // HSL:
+            // outputStream.putFrame(pipeline.hslThresholdOutput().clone());
             outputStream.putFrame(cloneMat);
         });
         visionThread.start();

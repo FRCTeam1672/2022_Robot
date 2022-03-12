@@ -80,4 +80,8 @@ public class DriveSubsystem extends SubsystemBase {
   public WPI_TalonSRX getFrontLeft() {
     return frontLeft;
   }
+
+  public WPI_TalonSRX getFrontRight() {
+    return frontRight;
+  }
 }

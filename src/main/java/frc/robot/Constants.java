@@ -38,9 +38,9 @@ public final class Constants {
     }
 
     public static class Vision {
-        //TODO Ensure camera values are correct
-        public static final int CAMERA_IMG_WIDTH = 300;
-        public static final int CAMERA_IMG_HEIGHT = 500;
+        // TODO Ensure camera values are correct
+        public static final int CAMERA_IMG_WIDTH = 480;
+        public static final int CAMERA_IMG_HEIGHT = 360;
     }
 
     public static class Controller {
