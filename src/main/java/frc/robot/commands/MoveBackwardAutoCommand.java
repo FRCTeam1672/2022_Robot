@@ -10,13 +10,13 @@ import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class MoveForwardCommand extends CommandBase {
+public class MoveBackwardAutoCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem driveSystem;
   private final ShooterSubsystem shooter;
   private boolean set = false;
 
-  public MoveForwardCommand(DriveSubsystem subsystem, ShooterSubsystem shooter) {
+  public MoveBackwardAutoCommand(DriveSubsystem subsystem, ShooterSubsystem shooter) {
     this.driveSystem = subsystem;
     this.shooter = shooter;
     // Use addRequirements() here to declare subsystem dependencies.

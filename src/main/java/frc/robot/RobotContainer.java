@@ -9,20 +9,12 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.MoveForwardCommand;
-import frc.robot.commands.RetractInnerArmCommand;
-import frc.robot.commands.RetractOuterArmsCommand;
-import frc.robot.commands.ShootCargoCommand;
-import frc.robot.commands.ToggleIntakeCommand;
-import frc.robot.commands.UnclogCargoCommand;
-import frc.robot.commands.UndoArmsCommand;
-import frc.robot.commands.ExtendArmsCommand;
-import frc.robot.commands.IntakeCargoCommand;
-import frc.robot.subsystems.ClimbSubsystem;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 import frc.robot.vision.Vision;
 
 /**
@@ -46,8 +38,11 @@ public class RobotContainer {
   private final RetractInnerArmCommand retractInnerArmCommand =
       new RetractInnerArmCommand(climbSubsystem);
 
-  private final MoveForwardCommand moveForwardCommand =
-      new MoveForwardCommand(driveSubsystem, shooterSubsystem);
+  private final MoveBackwardAutoCommand moveForwardCommand =
+      new MoveBackwardAutoCommand(driveSubsystem, shooterSubsystem);
+
+  private final ShootLowIntakeShootCommand shootLowCommand =
+      new ShootLowIntakeShootCommand(driveSubsystem, shooterSubsystem);
 
   private final UnclogCargoCommand unclogCargoCommand = new UnclogCargoCommand(shooterSubsystem);
 
@@ -57,6 +52,7 @@ public class RobotContainer {
   private final XboxController hangController = new XboxController(1);
 
   private Vision vision;
+  private SendableChooser<CommandBase> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -64,7 +60,11 @@ public class RobotContainer {
     configureButtonBindings();
     configureVision();
 
+    autoChooser = new SendableChooser<>();
+
     // add SendableChooser for auto command to run
+    autoChooser.addOption("Back + High", moveForwardCommand);
+    autoChooser.setDefaultOption("Shoot Low, Intake", shootLowCommand);
 
     SmartDashboard.putString("Shooter Speed", shooterSubsystem.getShooterSpeed());
   }
@@ -78,7 +78,11 @@ public class RobotContainer {
   private void configureVision() {
     UsbCamera camera1 = CameraServer.startAutomaticCapture();
     UsbCamera camera2 = CameraServer.startAutomaticCapture();
-    vision = new Vision(camera1, driveSubsystem);
+    camera2.setResolution(360, 240);
+    camera2.setFPS(15);
+    // camera2.setBrightness(40);
+    camera2.setExposureManual(30);
+    vision = new Vision(camera2, driveSubsystem);
   }
 
   private void configureButtonBindings() {
@@ -118,6 +122,10 @@ public class RobotContainer {
       unclogCargoCommand.execute();
     if (controller.getYButtonReleased())
       unclogCargoCommand.end(false);
+
+    if (controller.getXButton()) {
+      vision.findAndOrient();
+    }
 
     // if (controller.getAButtonPressed()) {
     // climbSubsystem.runNextCommand(false);
@@ -162,7 +170,7 @@ public class RobotContainer {
     }
 
     if (hangController.getLeftBumperPressed() || hangController.getRightBumperPressed()) {
-      climbSubsystem.getCenterSolenoid().set(true);
+      // climbSubsystem.getCenterSolenoid().set(true);
     }
 
     if (hangController.getXButton()) {
