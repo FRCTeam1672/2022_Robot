@@ -26,7 +26,7 @@ public class VisionMathUtils {
 		double average = 0.0;
 		int numOfNonOutliers = 0;
 		for (double i : values) {
-			// outlier is a data point outside of 1.3 times standard deviation from the mean
+			// outlier is a data point outside 1.3 times standard deviation from the mean
 			if (((mean + standardDeviation) * 1.3) > i && ((mean - standardDeviation) * 1.3) < i) {
 				average += i;
 				numOfNonOutliers++;

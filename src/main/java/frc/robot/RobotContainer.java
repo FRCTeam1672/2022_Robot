@@ -14,8 +14,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.*;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.vision.Vision;
+
+import static frc.robot.Constants.Controller.Joystick.*;
+import static frc.robot.enums.ControllerType.CLIMB;
+import static frc.robot.enums.ControllerType.DRIVE;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -48,14 +54,19 @@ public class RobotContainer {
 
   private final PneumaticsControlModule pcm = new PneumaticsControlModule(0);
 
-  private final XboxController controller = new XboxController(0);
+  private final XboxController shootController = new XboxController(0);
   private final XboxController hangController = new XboxController(1);
 
   private Vision vision;
+  private final VisionFindAndOrientCommand visionFindAndOrientCommand = new VisionFindAndOrientCommand(vision, driveSubsystem);
+
   private SendableChooser<CommandBase> autoChooser;
+
+  private final Controls controls;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    controls = new Controls(shootController, hangController);
     // Configure the button bindings
     configureButtonBindings();
     configureVision();
@@ -76,7 +87,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureVision() {
-    UsbCamera camera1 = CameraServer.startAutomaticCapture();
+    //Camera 1
+    CameraServer.startAutomaticCapture();
     UsbCamera camera2 = CameraServer.startAutomaticCapture();
     camera2.setResolution(360, 240);
     camera2.setFPS(15);
@@ -86,13 +98,31 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    // Configure Button Bindings Here
-    // controls.bindButtonHeld(Buttons.P1_RB, shootCargoCommand);
-    // controls.bindButtonHeld(Buttons.P1_LB, intakeCargoCommand);
-    // controls.bindButtonHeld(Buttons.P1_A, toggleIntakeCommand);
+    //Configure Button Bindings Here
 
-    // controls.bindButton(Buttons.P2_LB, InputType.PRESSED,
-    // () -> climbSubsystem.runNextCommand(false));
+    //Bind drive buttons first
+    controls.bindButton(DRIVE, LB_BUTTON, intakeCargoCommand, null);
+    controls.bindButton(DRIVE, RB_BUTTON, shootCargoCommand, null);
+    controls.bindButton(DRIVE, Y_BUTTON, unclogCargoCommand, null);
+    controls.bindButton(DRIVE, X_BUTTON, visionFindAndOrientCommand, null);
+    controls.bindButton(DRIVE, B_BUTTON, toggleIntakeCommand, null);
+    controls.bindButton(DRIVE, RIGHT_STICK_BUTTON, driveSubsystem::toggleDirection, null);
+
+    //Do shooter button now
+    controls.bindButton(CLIMB, START_BUTTON, shooterSubsystem::toggleSpeed, null);
+    controls.bindButton(CLIMB, A_BUTTON, extendArmsCommand, null);
+    controls.bindButton(CLIMB, B_BUTTON, retractInnerArmCommand, null);
+    controls.bindButton(CLIMB, BACK_BUTTON, undoArmsCommand, null);
+    controls.bindButton(CLIMB,
+            LB_BUTTON,
+            () -> climbSubsystem.getLeftMotor().set(0.45),
+            () -> climbSubsystem.getLeftMotor().set(0));
+    controls.bindButton(CLIMB,
+            RB_BUTTON,
+            () -> climbSubsystem.getRightMotor().set(0.45),
+            () -> climbSubsystem.getRightMotor().set(0));
+    controls.bindButton(CLIMB, START_BUTTON, () -> driveSubsystem.changeSpeed(0.1), null);
+    controls.bindButton(CLIMB, START_BUTTON, () -> driveSubsystem.changeSpeed(-0.1), null);
   }
 
   /**
@@ -105,25 +135,30 @@ public class RobotContainer {
     return moveForwardCommand;
   }
 
+  /**
+   * This method will never run
+   */
+  @Deprecated
   public void teleopPeriodic() {
-    if (controller.getLeftBumper())
+    if(true) return;
+    if (shootController.getLeftBumper())
       intakeCargoCommand.execute();
-    if (controller.getLeftBumperReleased())
+    if (shootController.getLeftBumperReleased())
       intakeCargoCommand.end(false);
 
-    if (controller.getRightBumperPressed())
+    if (shootController.getRightBumperPressed())
       shootCargoCommand.initialize();
-    if (controller.getRightBumper())
+    if (shootController.getRightBumper())
       shootCargoCommand.execute();
-    if (controller.getRightBumperReleased())
+    if (shootController.getRightBumperReleased())
       shootCargoCommand.end(false);
 
-    if (controller.getYButton())
+    if (shootController.getYButton())
       unclogCargoCommand.execute();
-    if (controller.getYButtonReleased())
+    if (shootController.getYButtonReleased())
       unclogCargoCommand.end(false);
 
-    if (controller.getXButton()) {
+    if (shootController.getXButton()) {
       vision.findAndOrient();
     }
 
@@ -131,17 +166,19 @@ public class RobotContainer {
     // climbSubsystem.runNextCommand(false);
     // }
 
-    if (controller.getBButtonPressed()) {
+    if (shootController.getBButtonPressed()) {
       toggleIntakeCommand.execute();
     }
+    if (shootController.getRightStickButtonPressed()) {
+      driveSubsystem.toggleDirection();
+    }
 
+//Hang controller start
     if (hangController.getStartButtonPressed()) {
       shooterSubsystem.toggleSpeed();
     }
 
-    if (controller.getRightStickButtonPressed()) {
-      driveSubsystem.toggleDirection();
-    }
+
 
     if (hangController.getAButtonPressed()) {
       extendArmsCommand.schedule();
