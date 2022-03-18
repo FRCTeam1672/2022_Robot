@@ -17,6 +17,8 @@ import frc.robot.commands.auto.MoveBackwardAutoCommand;
 import frc.robot.commands.auto.VisionFindAndOrientCommand;
 import frc.robot.commands.climb.ExtendArmsCommand;
 import frc.robot.commands.climb.RetractInnerArmCommand;
+import frc.robot.commands.climb.RetractLeftArmCommand;
+import frc.robot.commands.climb.RetractRightArmCommand;
 import frc.robot.commands.climb.UndoArmsCommand;
 import frc.robot.commands.shooter.*;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -48,6 +50,8 @@ public class RobotContainer {
   private final UndoArmsCommand undoArmsCommand = new UndoArmsCommand(climbSubsystem);
   private final RetractInnerArmCommand retractInnerArmCommand =
       new RetractInnerArmCommand(climbSubsystem);
+  private final RetractLeftArmCommand retractLeftArmCommand = new RetractLeftArmCommand(climbSubsystem);
+  private final RetractRightArmCommand retractRightArmCommand = new RetractRightArmCommand(climbSubsystem);
 
   private final MoveBackwardAutoCommand moveForwardCommand =
       new MoveBackwardAutoCommand(driveSubsystem, shooterSubsystem);
@@ -129,14 +133,8 @@ public class RobotContainer {
     controls.bindButton(CLIMB, A_BUTTON, extendArmsCommand, null);
     controls.bindButton(CLIMB, B_BUTTON, retractInnerArmCommand, null);
     controls.bindButton(CLIMB, BACK_BUTTON, undoArmsCommand, null);
-    controls.bindButton(CLIMB,
-            LB_BUTTON,
-            () -> climbSubsystem.getLeftMotor().set(0.45),
-            () -> climbSubsystem.getLeftMotor().set(0));
-    controls.bindButton(CLIMB,
-            RB_BUTTON,
-            () -> climbSubsystem.getRightMotor().set(0.45),
-            () -> climbSubsystem.getRightMotor().set(0));
+    controls.bindButton(CLIMB, LB_BUTTON, retractLeftArmCommand, null);
+    controls.bindButton(CLIMB, RB_BUTTON, retractRightArmCommand, null);
     controls.bindButton(CLIMB, START_BUTTON, () -> driveSubsystem.changeSpeed(0.1), null);
     controls.bindButton(CLIMB, START_BUTTON, () -> driveSubsystem.changeSpeed(-0.1), null);
     Log.info("Finished configuration for button bindings. ");
