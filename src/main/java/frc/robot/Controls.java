@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.enums.ControllerType;
+import frc.robot.Constants.Controller.ControllerType;
 
 public class Controls {
     private final XboxController driveController;

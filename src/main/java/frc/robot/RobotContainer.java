@@ -13,22 +13,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.commands.auto.MoveBackwardAutoCommand;
-import frc.robot.commands.auto.VisionFindAndOrientCommand;
-import frc.robot.commands.climb.ExtendOuterArmsCommand;
-import frc.robot.commands.climb.RetractInnerArmCommand;
-import frc.robot.commands.climb.RetractLeftArmCommand;
-import frc.robot.commands.climb.RetractRightArmCommand;
-import frc.robot.commands.climb.UndoOuterArmsCommand;
+import frc.robot.commands.auto.*;
+import frc.robot.commands.climb.*;
 import frc.robot.commands.shooter.*;
-import frc.robot.subsystems.ClimbSubsystem;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.*;
 import frc.robot.vision.Vision;
 
 import static frc.robot.Constants.Controller.Joystick.*;
-import static frc.robot.enums.ControllerType.CLIMB;
-import static frc.robot.enums.ControllerType.DRIVE;
+import static frc.robot.Constants.Controller.ControllerType.CLIMB;
+import static frc.robot.Constants.Controller.ControllerType.DRIVE;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -45,26 +38,25 @@ public class RobotContainer {
   private final ToggleIntakeCommand toggleIntakeCommand = new ToggleIntakeCommand(shooterSubsystem);
   private final ShootCargoCommand shootCargoCommand = new ShootCargoCommand(shooterSubsystem);
   private final IntakeCargoCommand intakeCargoCommand = new IntakeCargoCommand(shooterSubsystem);
+  private final UnclogCargoCommand unclogCargoCommand = new UnclogCargoCommand(shooterSubsystem);
 
+  private final ExtendInnerArmCommand extendInnerArmCommand = new ExtendInnerArmCommand(climbSubsystem);
   private final ExtendOuterArmsCommand extendArmsCommand = new ExtendOuterArmsCommand(climbSubsystem);
-  private final UndoOuterArmsCommand undoArmsCommand = new UndoOuterArmsCommand(climbSubsystem);
-  private final RetractInnerArmCommand retractInnerArmCommand =
-      new RetractInnerArmCommand(climbSubsystem);
+
+  private final UndoInnerArmCommand undoInnerArmCommand = new UndoInnerArmCommand(climbSubsystem);
+  private final UndoOuterArmsCommand undoOuterArmsCommand = new UndoOuterArmsCommand(climbSubsystem);
+
+  private final RetractInnerArmCommand retractInnerArmCommand = new RetractInnerArmCommand(climbSubsystem);
   private final RetractLeftArmCommand retractLeftArmCommand = new RetractLeftArmCommand(climbSubsystem);
   private final RetractRightArmCommand retractRightArmCommand = new RetractRightArmCommand(climbSubsystem);
 
-  private final MoveBackwardAutoCommand moveForwardCommand =
-      new MoveBackwardAutoCommand(driveSubsystem, shooterSubsystem);
-
-  private final ShootLowIntakeShootCommand shootLowCommand =
-      new ShootLowIntakeShootCommand(driveSubsystem, shooterSubsystem);
-
-  private final UnclogCargoCommand unclogCargoCommand = new UnclogCargoCommand(shooterSubsystem);
+  private final MoveBackwardAutoCommand moveForwardCommand = new MoveBackwardAutoCommand(driveSubsystem, shooterSubsystem);
+  private final ShootLowIntakeShootCommand shootLowCommand = new ShootLowIntakeShootCommand(driveSubsystem, shooterSubsystem);
 
   private final PneumaticsControlModule pcm = new PneumaticsControlModule(0);
 
-  private final XboxController shootController = new XboxController(0);
-  private final XboxController hangController = new XboxController(1);
+  private final XboxController shootController = new XboxController(DRIVE.ordinal());
+  private final XboxController hangController = new XboxController(CLIMB.ordinal());
 
   private Vision vision;
   private final VisionFindAndOrientCommand visionFindAndOrientCommand = new VisionFindAndOrientCommand(vision, driveSubsystem);
@@ -128,15 +120,19 @@ public class RobotContainer {
     controls.bindButton(DRIVE, B_BUTTON, toggleIntakeCommand, null);
     controls.bindButton(DRIVE, RIGHT_STICK_BUTTON, driveSubsystem::toggleDirection, null);
 
+    controls.bindButton(DRIVE, BACK_BUTTON, undoInnerArmCommand, null);
+    controls.bindButton(DRIVE, LB_BUTTON, extendInnerArmCommand, null);
+    controls.bindButton(DRIVE, RB_BUTTON, retractInnerArmCommand, null);
+
     //Do shooter button now
     controls.bindButton(CLIMB, START_BUTTON, shooterSubsystem::toggleSpeed, null);
     controls.bindButton(CLIMB, A_BUTTON, extendArmsCommand, null);
     controls.bindButton(CLIMB, B_BUTTON, retractInnerArmCommand, null);
-    controls.bindButton(CLIMB, BACK_BUTTON, undoArmsCommand, null);
+    controls.bindButton(CLIMB, BACK_BUTTON, undoOuterArmsCommand, null);
     controls.bindButton(CLIMB, LB_BUTTON, retractLeftArmCommand, null);
     controls.bindButton(CLIMB, RB_BUTTON, retractRightArmCommand, null);
-    controls.bindButton(CLIMB, START_BUTTON, () -> driveSubsystem.changeSpeed(0.1), null);
-    controls.bindButton(CLIMB, START_BUTTON, () -> driveSubsystem.changeSpeed(-0.1), null);
+    controls.bindButton(CLIMB, Y_BUTTON, () -> driveSubsystem.changeSpeed(0.1), null);
+    controls.bindButton(CLIMB, X_BUTTON, () -> driveSubsystem.changeSpeed(-0.1), null);
     Log.info("Finished configuration for button bindings. ");
   }
 
@@ -205,7 +201,7 @@ public class RobotContainer {
     }
 
     if (hangController.getBackButtonPressed()) {
-      undoArmsCommand.schedule();
+      undoOuterArmsCommand.schedule();
     }
 
     if (hangController.getLeftBumper()) {

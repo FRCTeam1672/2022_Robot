@@ -44,8 +44,11 @@ public final class Constants {
     }
 
     public static class Controller {
-        public static final int MAIN = 0;
-        public static final int CLIMB = 1;
+        public enum ControllerType {
+            DRIVE,
+            CLIMB
+        }
+        
         public static class Joystick{
             //4 colored buttons
             public static final int A_BUTTON = 1;
