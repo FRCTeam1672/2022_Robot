@@ -56,6 +56,6 @@ public class Log {
         formatter.setTimeZone(TimeZone.getTimeZone("EST"));
         String currentTime;
         currentTime = formatter.format(date);
-        System.out.println("<!><!> [ERROR " + currentTime + "]: " + msg +  " !><!>");
+        System.out.println("<!><!> [ERROR " + currentTime + "]: " + msg +  " <!><!>");
     }
 }
