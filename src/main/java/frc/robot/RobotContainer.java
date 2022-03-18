@@ -15,11 +15,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.auto.MoveBackwardAutoCommand;
 import frc.robot.commands.auto.VisionFindAndOrientCommand;
-import frc.robot.commands.climb.ExtendArmsCommand;
+import frc.robot.commands.climb.ExtendOuterArmsCommand;
 import frc.robot.commands.climb.RetractInnerArmCommand;
 import frc.robot.commands.climb.RetractLeftArmCommand;
 import frc.robot.commands.climb.RetractRightArmCommand;
-import frc.robot.commands.climb.UndoArmsCommand;
+import frc.robot.commands.climb.UndoOuterArmsCommand;
 import frc.robot.commands.shooter.*;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -46,8 +46,8 @@ public class RobotContainer {
   private final ShootCargoCommand shootCargoCommand = new ShootCargoCommand(shooterSubsystem);
   private final IntakeCargoCommand intakeCargoCommand = new IntakeCargoCommand(shooterSubsystem);
 
-  private final ExtendArmsCommand extendArmsCommand = new ExtendArmsCommand(climbSubsystem);
-  private final UndoArmsCommand undoArmsCommand = new UndoArmsCommand(climbSubsystem);
+  private final ExtendOuterArmsCommand extendArmsCommand = new ExtendOuterArmsCommand(climbSubsystem);
+  private final UndoOuterArmsCommand undoArmsCommand = new UndoOuterArmsCommand(climbSubsystem);
   private final RetractInnerArmCommand retractInnerArmCommand =
       new RetractInnerArmCommand(climbSubsystem);
   private final RetractLeftArmCommand retractLeftArmCommand = new RetractLeftArmCommand(climbSubsystem);

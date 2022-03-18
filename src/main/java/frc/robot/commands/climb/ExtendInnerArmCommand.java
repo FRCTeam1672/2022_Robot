@@ -1,13 +1,15 @@
 package frc.robot.commands.climb;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.Climb;
 import frc.robot.subsystems.ClimbSubsystem;
 
-public class UnlockArmsCommand extends CommandBase {
+public class ExtendInnerArmCommand extends CommandBase {
+
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     private final ClimbSubsystem climbSystem;
 
-    public UnlockArmsCommand(ClimbSubsystem subsystem) {
+    public ExtendInnerArmCommand(ClimbSubsystem subsystem) {
         this.climbSystem = subsystem;
         addRequirements(this.climbSystem);
     }
@@ -19,12 +21,14 @@ public class UnlockArmsCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        this.climbSystem.getSolenoid().set(false);
+        this.climbSystem.getCenterMotor().set(Climb.MAX_BACKWARDS);
     }
 
     // Called once the command ends or is interrupted.
     @Override
-    public void end(boolean interrupted) {}
+    public void end(boolean interrupted) {
+        this.climbSystem.getCenterMotor().set(Climb.ZERO);
+    }
 
     // Returns true when the command should end.
     @Override

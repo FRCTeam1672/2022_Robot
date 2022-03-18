@@ -4,12 +4,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Climb;
 import frc.robot.subsystems.ClimbSubsystem;
 
-public class UndoArmsCommand extends CommandBase {
+public class ExtendOuterArmsCommand extends CommandBase {
 
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     private final ClimbSubsystem climbSystem;
 
-    public UndoArmsCommand(ClimbSubsystem subsystem) {
+    public ExtendOuterArmsCommand(ClimbSubsystem subsystem) {
         this.climbSystem = subsystem;
         addRequirements(this.climbSystem);
     }
@@ -24,8 +24,8 @@ public class UndoArmsCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        this.climbSystem.getLeftMotor().set(Climb.MAX_FORWARDS / 2);
-        this.climbSystem.getRightMotor().set(Climb.MAX_FORWARDS / 2);
+        this.climbSystem.getLeftMotor().set(Climb.MAX_FORWARDS * 0.66);
+        this.climbSystem.getRightMotor().set(Climb.MAX_FORWARDS * 0.66);
 
         System.out.print(this.climbSystem.getLeftMotor().getSelectedSensorPosition() + " ");
         System.out.println(this.climbSystem.getRightMotor().getSelectedSensorPosition());
@@ -41,7 +41,10 @@ public class UndoArmsCommand extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return Math.abs(this.climbSystem.getLeftMotor().getSelectedSensorPosition()) > 900
-                || Math.abs(this.climbSystem.getRightMotor().getSelectedSensorPosition()) > 900;
+        return Math
+                .abs(this.climbSystem.getLeftMotor()
+                        .getSelectedSensorPosition()) > Climb.OUTER_CLIMB_REVS
+                || Math.abs(this.climbSystem.getRightMotor()
+                        .getSelectedSensorPosition()) > Climb.OUTER_CLIMB_REVS;
     }
 }
