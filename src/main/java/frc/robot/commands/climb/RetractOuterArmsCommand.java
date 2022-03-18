@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Climb;
 import frc.robot.subsystems.ClimbSubsystem;
 
+@Deprecated
 public class RetractOuterArmsCommand extends CommandBase {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     private final ClimbSubsystem climbSystem;
