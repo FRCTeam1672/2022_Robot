@@ -1,17 +1,15 @@
-package frc.robot.commands;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.Climb;
-import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
-public class ExtendCenterArmCommand extends CommandBase {
-
+public class ToggleIntakeCommand extends CommandBase {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-    private final ClimbSubsystem climbSystem;
+    private final ShooterSubsystem shooterSubsystem;
 
-    public ExtendCenterArmCommand(ClimbSubsystem subsystem) {
-        this.climbSystem = subsystem;
-        addRequirements(this.climbSystem);
+    public ToggleIntakeCommand(ShooterSubsystem subsystem) {
+        this.shooterSubsystem = subsystem;
+        addRequirements(this.shooterSubsystem);
     }
 
     // Called when the command is initially scheduled.
@@ -21,14 +19,12 @@ public class ExtendCenterArmCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        this.climbSystem.getCenterMotor().set(Climb.MAX_BACKWARDS);
+        this.shooterSubsystem.getSolenoid().toggle();
     }
 
     // Called once the command ends or is interrupted.
     @Override
-    public void end(boolean interrupted) {
-        this.climbSystem.getCenterMotor().set(Climb.ZERO);
-    }
+    public void end(boolean interrupted) {}
 
     // Returns true when the command should end.
     @Override

@@ -6,11 +6,11 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Climb;
-import frc.robot.commands.ExtendArmsCommand;
-import frc.robot.commands.ExtendCenterArmCommand;
-import frc.robot.commands.RetractInnerArmCommand;
-import frc.robot.commands.RetractOuterArmsCommand;
-import frc.robot.commands.UnlockArmsCommand;
+import frc.robot.commands.climb.ExtendArmsCommand;
+import frc.robot.commands.climb.ExtendCenterArmCommand;
+import frc.robot.commands.climb.RetractInnerArmCommand;
+import frc.robot.commands.climb.RetractOuterArmsCommand;
+import frc.robot.commands.climb.UnlockArmsCommand;
 
 public class ClimbSubsystem extends SubsystemBase {
     private WPI_TalonSRX left;

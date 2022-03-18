@@ -25,22 +25,24 @@ Now we know what the vision pipeline class is, lets see how it processes.
 
 1. We first blur our image in order to get rid of any unnecessary noise which could interfere later on. It also removes a lot of the sharp edges which could make it hard to process.
 2. Now, in order to find the reflective tape, we must filter down the image to a specific threshold which contains the reflective tape. In order to achieve this, we use HSL (Hue, Saturation, Luminance) in order to find the reflective tape which fits our threshold.
-3. Now even though we filtered out a lot of stuff which doesn't fill the HSL threshold of the reflective tape, there are still a lot of items which still show up in the image. In order to filter this out, we convert the entire image to contours (curves), and do filtering to find a contour which best fits the reflective tape's profile.
+3. Now even though we filtered out a lot of stuff which doesn't fill the HSL threshold of the reflective tape, there are still a lot of items which still show up in the image. In order to filter this out, we convert the entire image to contours (curves), and do filter to find a contour which best fits the reflective tape's profile.
 
 Now that we have the reflective tape, we can pass this info back to the vision class to be interpreted.
 ## Vision Class
 The vision class is what interprets the result of the vision pipeline and gives us values which we can use to maneuver the robot to orient itself to the upper hub.
-After we finish processing the image from the vision pipeline, we first check if there is anything even detected. If there is, we we draw rectangle which goes around the reflective tape (kind of like convex hulls), using the `Imgproc.rect()` method.
-We then pull the middle of the reflective tape by using a simple formula, and then using another equation, we then convert the quite large `centerX` into a nice small value which we can pass to the DriveSubsystem. This is then executed and the (hopefully) robot turns to the hub!
+After we finish processing the image from the vision pipeline, we first check if there is anything even detected. If there is, we have to figure out where the middle of the hub is. We use `mean deviation weighted average`. Now, I didn't write the math. TJ did, and as such, I have no idea how it works. 
+But either way, we now have the middle of the hub by using all the reflective tape to find the middle.
+We then draw rectangle which goes around the detected middle using the `Imgproc.rect()` method.
+We then pull the middle of the hub by using a simple formula, and then using another equation, we then convert the quite large `centerX` into a nice small value which we can pass to the DriveSubsystem. This is then executed and the (hopefully) robot turns to the hub!
 
 -----------------
 Possible Additions: 
 --
 - Be able to filter out the other pieces of the reflective tape, and find the one in the middle to ensure that the robot is always facing the middle
-- Be able to check to see if a piece of reflective tape exists for mutiple frames. This will also help us filter out anything that might be noise that flickers in and out(eg. random reflection on the side of the screen)
-- Change some of the configurations and have it be able to detect balls on the ground, and be able to pick to drive to the ball and pick it up. This kind of tech could allow us to be fully autonomus, and not even need any drivers
+- Be able to check to see if a piece of reflective tape exists for multiple frames. This will also help us filter out anything that might be noise that flickers in and out(e.g. random reflection on the side of the screen)
+- Change some configurations and have it be able to detect balls on the ground, and be able to pick to drive to the ball and pick it up. This kind of tech could allow us to be fully autonomous, and not even need any drivers
 
-Keep in mind that this additions are just ideas, and probably won't be implemented in time for competition. 
+Keep in mind that these additions are just ideas, and probably won't be implemented in time for competition. 
 
 -----------------
 Hopefully this small explanation gives you insight into how the vision system works!

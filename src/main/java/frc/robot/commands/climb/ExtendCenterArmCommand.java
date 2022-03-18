@@ -1,28 +1,27 @@
-package frc.robot.commands;
+package frc.robot.commands.climb;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Climb;
 import frc.robot.subsystems.ClimbSubsystem;
 
-public class RetractInnerArmCommand extends CommandBase {
+public class ExtendCenterArmCommand extends CommandBase {
+
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     private final ClimbSubsystem climbSystem;
 
-    public RetractInnerArmCommand(ClimbSubsystem subsystem) {
+    public ExtendCenterArmCommand(ClimbSubsystem subsystem) {
         this.climbSystem = subsystem;
         addRequirements(this.climbSystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
-    public void initialize() {
-        this.climbSystem.getCenterMotor().setSelectedSensorPosition(0);
-    }
+    public void initialize() {}
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        this.climbSystem.getCenterMotor().set(Climb.MAX_BACKWARDS * 0.75);
+        this.climbSystem.getCenterMotor().set(Climb.MAX_BACKWARDS);
     }
 
     // Called once the command ends or is interrupted.
@@ -34,7 +33,6 @@ public class RetractInnerArmCommand extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return Math.abs(this.climbSystem.getLeftMotor()
-                .getSelectedSensorPosition()) > Climb.OUTER_CLIMB_REVS / 2;
+        return false;
     }
 }

@@ -13,7 +13,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.commands.*;
+import frc.robot.commands.auto.MoveBackwardAutoCommand;
+import frc.robot.commands.auto.VisionFindAndOrientCommand;
+import frc.robot.commands.climb.ExtendArmsCommand;
+import frc.robot.commands.climb.RetractInnerArmCommand;
+import frc.robot.commands.climb.UndoArmsCommand;
+import frc.robot.commands.shooter.*;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -66,6 +71,9 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    long startTime = System.currentTimeMillis();
+    Log.info("Started robot container");
+
     controls = new Controls(shootController, hangController);
     // Configure the button bindings
     configureButtonBindings();
@@ -78,6 +86,10 @@ public class RobotContainer {
     autoChooser.setDefaultOption("Shoot Low, Intake", shootLowCommand);
 
     SmartDashboard.putString("Shooter Speed", shooterSubsystem.getShooterSpeed());
+    long currentTime = System.currentTimeMillis();
+    long duration = currentTime - startTime;
+
+    Log.info("Finished initialization for the RobotContainer class. Took " + duration + " ms to initialize.");
   }
 
   /**
@@ -87,6 +99,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureVision() {
+    Log.info("Starting Vision configuration");
     //Camera 1
     CameraServer.startAutomaticCapture();
     UsbCamera camera2 = CameraServer.startAutomaticCapture();
@@ -95,10 +108,13 @@ public class RobotContainer {
     // camera2.setBrightness(40);
     camera2.setExposureManual(30);
     vision = new Vision(camera2, driveSubsystem);
+    //Vision config finished message is sent by Vision#initVisionSystem
   }
 
   private void configureButtonBindings() {
     //Configure Button Bindings Here
+    Log.info("Starting configuration for button bindings. ");
+    Log.info("NOTICE: If you see any warnings for button bindings using runnable, you can ignore it, but do bug programming to move to the WPILib commands system.");
 
     //Bind drive buttons first
     controls.bindButton(DRIVE, LB_BUTTON, intakeCargoCommand, null);
@@ -123,6 +139,7 @@ public class RobotContainer {
             () -> climbSubsystem.getRightMotor().set(0));
     controls.bindButton(CLIMB, START_BUTTON, () -> driveSubsystem.changeSpeed(0.1), null);
     controls.bindButton(CLIMB, START_BUTTON, () -> driveSubsystem.changeSpeed(-0.1), null);
+    Log.info("Finished configuration for button bindings. ");
   }
 
   /**
@@ -141,6 +158,7 @@ public class RobotContainer {
   @Deprecated
   public void teleopPeriodic() {
     if(true) return;
+    Log.error("Old controls system called (RobotContainer#teleopPeriodic). The new system should be used instead.");
     if (shootController.getLeftBumper())
       intakeCargoCommand.execute();
     if (shootController.getLeftBumperReleased())

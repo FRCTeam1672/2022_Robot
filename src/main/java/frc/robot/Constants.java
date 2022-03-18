@@ -76,4 +76,8 @@ public final class Constants {
             public static final double HIGH = 1.0;
         }
     }
+    public static final boolean IS_DEBUGGING = false;
+    public static final boolean DONT_LOG_INFO = false;
+    //Whether we use 17:00 for logging or 6:00 PM for logging
+    public static final boolean USE_24_HOUR_TIME = true;
 }

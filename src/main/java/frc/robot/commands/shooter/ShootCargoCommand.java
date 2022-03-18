@@ -1,14 +1,13 @@
-package frc.robot.commands;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class UnclogCargoCommand extends CommandBase {
+public class ShootCargoCommand extends CommandBase {
     private final ShooterSubsystem shooter;
     private boolean aimAssist = true;
 
-    public UnclogCargoCommand(ShooterSubsystem subsystem) {
+    public ShootCargoCommand(ShooterSubsystem subsystem) {
         this.shooter = subsystem;
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(subsystem);
@@ -31,8 +30,12 @@ public class UnclogCargoCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        shooter.getGuideMotor().set(-Constants.Shooter.Speed.SLOW);
-        shooter.getFlywheelMotor().set(-Constants.Shooter.Speed.MEDIUM);
+        if (aimAssist) {
+
+        }
+        // if (shooter.getFlywheelMotor().getSelectedSensorPosition() < -4096 * 15)
+        // shooter.getGuideMotor().set(Constants.Shooter.Speed.HIGH);
+        shooter.getFlywheelMotor().set(shooter.getCurrentSpeed());
         System.out.println(shooter.getFlywheelMotor().getSelectedSensorVelocity());
     }
 

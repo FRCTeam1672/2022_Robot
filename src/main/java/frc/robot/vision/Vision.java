@@ -6,8 +6,12 @@ import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Log;
 import frc.robot.subsystems.DriveSubsystem;
-import org.opencv.core.*;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
@@ -17,9 +21,9 @@ import static frc.robot.Constants.Vision.CAMERA_IMG_WIDTH;
 
 /**
  * Handles the entire vision system
- *
+ * <p>
  * https://docs.wpilib.org/en/stable/docs/software/vision-processing/grip/using-generated-code-in-a-robot-program.html
- * 
+ *
  * @author TJ & Ishaan
  */
 public class Vision {
@@ -43,8 +47,16 @@ public class Vision {
      * Putting red rectangle - Updating current location of the center of the reflective tape
      */
     private void initVisionSystem() {
+
         visionPipeline = new VisionPipeline();
         CvSink cvSink = CameraServer.getVideo(camera);
+        if (!cvSink.isValid()) {
+            Log.error("[VISION] Unable to validate the OpenCV video stream (cvSink). Please alert a programmer about this");
+            Log.error("The vision pipeline will now deactivate.");
+            return;
+        }
+
+
         CvSource outputStream = CameraServer.putVideo("Vision Pipeline Camera", CAMERA_IMG_WIDTH,
                 CAMERA_IMG_HEIGHT);
 
@@ -54,8 +66,7 @@ public class Vision {
         VisionThread visionThread = new VisionThread(camera, visionPipeline, pipeline -> {
             // If we cannot grab a frame, return and send an error message
             if (cvSink.grabFrame(mat) == 0) {
-                System.out.println(
-                        "<!> [VISION SYSTEM] Could not pull frame from the CameraServer (cvSink) <!>");
+                Log.error("[VISION] Could not pull frame from the OpenCV Sink. Please alert a programmer about this");
                 return;
             }
             // Copies the old mat, so we can show the rectangle on it for the driver and does not
@@ -66,13 +77,13 @@ public class Vision {
                 final ArrayList<Double> rectangleCenters = new ArrayList<>();
                 pipeline.filterContoursOutput().forEach(matOfPoint -> {
                     Rect r = Imgproc.boundingRect(matOfPoint);
-                    synchronized (imgLock){
+                    synchronized (imgLock) {
                         double recCenter = r.x + r.width / 2.0;
                         rectangleCenters.add(recCenter);
                     }
                 });
                 double averageCenter = VisionMathUtils.getDeviationWeightedAverage(rectangleCenters);
-                synchronized (imgLock){
+                synchronized (imgLock) {
                     centerX = averageCenter;
                 }
                 double y = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0)).y;
@@ -89,13 +100,15 @@ public class Vision {
             outputStream.putFrame(cloneMat);
         });
         visionThread.start();
+        Log.info("Vision thread created, and has been started.");
+        Log.info("Vision configuration finished");
     }
 
     /**
      * This method returns the currently detected centerX. This is calculated to be the center of
      * the reflective tape. This is purely meant to be utility for support because we calculate the
      * turning for you already.
-     * 
+     *
      * @return The center X
      */
     @Deprecated
@@ -106,12 +119,12 @@ public class Vision {
     /**
      * This will return a double which is used in {@link DriveSubsystem#move(double, double)}, and
      * should be used for the 'z' direction. (ex) move(0, getTurnAmount());
-     *
+     * <p>
      * The turn value will also be placed on Shuffleboard for the driver (may change)
-     *
+     * <p>
      * If the returned value is 0.0, then assume that the reflective tape was not found. In reality,
      * the turn amount would never be perfectly 0.0.
-     * 
+     *
      * @return The turn
      */
     public double getTurnAmount() {
