@@ -14,7 +14,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private WPI_TalonSRX flywheelMotor;
     private Solenoid solenoid;
 
-    double LOW = 0.5;
+    double LOW = 0.63;
     double HIGH = 1;
     double currentSpeed = HIGH;
 

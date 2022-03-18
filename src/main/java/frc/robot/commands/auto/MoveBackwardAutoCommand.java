@@ -40,6 +40,7 @@ public class MoveBackwardAutoCommand extends CommandBase {
     if (Math.abs(this.driveSystem.getFrontLeft().getSelectedSensorPosition()) < MOVED * 2.4) { // was=3
       this.driveSystem.move(-0.7, 0);
     } else {
+      this.driveSystem.move(0, 0);
       shooter.getFlywheelMotor().set(shooter.getCurrentSpeed());
       if (!set) {
         shooter.getFlywheelMotor().setSelectedSensorPosition(0);

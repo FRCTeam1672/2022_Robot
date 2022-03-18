@@ -20,7 +20,7 @@ public class IntakeCargoCommand extends CommandBase {
     @Override
     public void execute() {
         shooter.getIntakeMotor().set(0.85);
-        shooter.getGuideMotor().set(0.42);
+        shooter.getGuideMotor().set(0.5);
     }
 
     // Called once the command ends or is interrupted.

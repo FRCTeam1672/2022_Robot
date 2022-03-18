@@ -60,7 +60,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void changeSpeed(double diff) {
     mod += diff;
-    mod = Math.min(mod, 0.3);
+    mod = Math.min(mod, 0.3); // TODO: determine good mod
     mod = Math.max(mod, 0);
     SmartDashboard.putNumber("Drive Speed", 0.65 + mod);
   }
