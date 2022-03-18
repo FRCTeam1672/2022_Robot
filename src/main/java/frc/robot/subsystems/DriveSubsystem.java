@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Drive;
+import frc.robot.Constants.Controller.ControllerType;
 
 public class DriveSubsystem extends SubsystemBase {
   private WPI_VictorSPX backLeft;
@@ -44,7 +45,7 @@ public class DriveSubsystem extends SubsystemBase {
     this.backRight.setNeutralMode(NeutralMode.Brake);
 
     this.drive = new DifferentialDrive(frontLeft, frontRight);
-    this.xController = new XboxController(0);
+    this.xController = new XboxController(ControllerType.DRIVE.ordinal());
 
     SmartDashboard.putString("Direction", direction > 0 ? "BACKWARDS" : "FORWARDS");
     SmartDashboard.putNumber("Drive Speed", 0.65 + mod);
