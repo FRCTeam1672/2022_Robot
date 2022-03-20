@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Climb;
 import frc.robot.subsystems.ClimbSubsystem;
 
+import static frc.robot.Constants.Climb.RETRACT_SPEED;
+
 public class RetractRightArmCommand extends CommandBase {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     private final ClimbSubsystem climbSystem;
@@ -22,7 +24,7 @@ public class RetractRightArmCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        this.climbSystem.getRightMotor().set(0.45);
+        this.climbSystem.getRightMotor().set(RETRACT_SPEED);
     }
 
     // Called once the command ends or is interrupted.

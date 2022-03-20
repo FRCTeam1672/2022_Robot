@@ -2,6 +2,7 @@ package frc.robot.commands.climb;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Climb;
+import frc.robot.Log;
 import frc.robot.subsystems.ClimbSubsystem;
 
 public class ExtendOuterArmsCommand extends CommandBase {
@@ -27,8 +28,8 @@ public class ExtendOuterArmsCommand extends CommandBase {
         this.climbSystem.getLeftMotor().set(Climb.MAX_FORWARDS * 0.66);
         this.climbSystem.getRightMotor().set(Climb.MAX_FORWARDS * 0.66);
 
-        System.out.print(this.climbSystem.getLeftMotor().getSelectedSensorPosition() + " ");
-        System.out.println(this.climbSystem.getRightMotor().getSelectedSensorPosition());
+        Log.debug("Climb Subsystem Left Motor: " + this.climbSystem.getLeftMotor().getSelectedSensorPosition()
+                + "Climb Subsystem Right Motor: " + this.climbSystem.getRightMotor().getSelectedSensorPosition());
     }
 
     // Called once the command ends or is interrupted.
@@ -45,6 +46,6 @@ public class ExtendOuterArmsCommand extends CommandBase {
                 .abs(this.climbSystem.getLeftMotor()
                         .getSelectedSensorPosition()) > Climb.OUTER_CLIMB_REVS
                 || Math.abs(this.climbSystem.getRightMotor()
-                        .getSelectedSensorPosition()) > Climb.OUTER_CLIMB_REVS;
+                .getSelectedSensorPosition()) > Climb.OUTER_CLIMB_REVS;
     }
 }

@@ -14,6 +14,14 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static class Autonomous {
+        //Was 8000 * 2.4
+        public static final int MOVED = 19200;
+        public static final double SPEED = -0.7;
+        public static final int FLYWHEEL_POSITION = 400000;
+        public static final long FINISH_POSITION = 2_600_000L;
+    }
+
     public static class Drive {
         public static final int FRONT_LEFT = 4;
         public static final int FRONT_RIGHT = 2;
@@ -22,15 +30,21 @@ public final class Constants {
     }
 
     public static class Climb {
+        //Retract speed for the arms
+        public static final double RETRACT_SPEED = 0.45;
+        //Retract speed for the arms
+        public static final double UNDO_SPEED = -0.5;
+        //The amount to undo the arms
+        public static final int UNDO_AMOUNT = 900;
+
         public static final int LEFT = 22;
         public static final int CENTER = 23;
         public static final int RIGHT = 21;
-
+        //what
         public static final double ZERO = 0.0;
         public static final double MAX_FORWARDS = -1.0;
         public static final double MAX_BACKWARDS = 1.0;
 
-        // Change This Later
         public static final int SOLENOID_ID = 4;
         public static final int CENTER_SOLENOID_ID = 5;
 
@@ -48,9 +62,8 @@ public final class Constants {
             DRIVE,
             CLIMB
         }
-        
-        public static class Joystick{
-            //4 colored buttons
+
+        public static class Joystick {
             public static final int A_BUTTON = 1;
             public static final int B_BUTTON = 2;
             public static final int X_BUTTON = 3;
@@ -73,12 +86,17 @@ public final class Constants {
         public static final int FLYWHEEL_MOTOR_PORT = 13;
         public static final int SOLENOID_ID = 6;
 
+
         public static class Speed {
             public static final double SLOW = 0.5;
             public static final double MEDIUM = 0.75;
             public static final double HIGH = 1.0;
+
+            public static final double INTAKE = 0.85;
+            public static final double GUIDE = 0.5;
         }
     }
+
     public static final boolean IS_DEBUGGING = false;
     public static final boolean DONT_LOG_INFO = false;
     //Whether we use 17:00 for logging or 6:00 PM for logging

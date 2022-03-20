@@ -7,12 +7,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Climb;
 
 public class ClimbSubsystem extends SubsystemBase {
-    private WPI_TalonSRX left;
-    private WPI_TalonSRX center;
-    private WPI_TalonSRX right;
+    private final WPI_TalonSRX left;
+    private final WPI_TalonSRX center;
+    private final WPI_TalonSRX right;
 
-    private Solenoid solenoid;
-    private Solenoid centerSolenoid;
+    private final Solenoid solenoid;
+    private final Solenoid centerSolenoid;
 
     public ClimbSubsystem() {
         this.left = new WPI_TalonSRX(Climb.LEFT);

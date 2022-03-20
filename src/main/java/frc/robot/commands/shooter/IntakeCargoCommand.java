@@ -3,6 +3,9 @@ package frc.robot.commands.shooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShooterSubsystem;
 
+import static frc.robot.Constants.Shooter.Speed.GUIDE;
+import static frc.robot.Constants.Shooter.Speed.INTAKE;
+
 public class IntakeCargoCommand extends CommandBase {
     private final ShooterSubsystem shooter;
 
@@ -19,8 +22,8 @@ public class IntakeCargoCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        shooter.getIntakeMotor().set(0.85);
-        shooter.getGuideMotor().set(0.5);
+        shooter.getIntakeMotor().set(INTAKE);
+        shooter.getGuideMotor().set(GUIDE);
     }
 
     // Called once the command ends or is interrupted.

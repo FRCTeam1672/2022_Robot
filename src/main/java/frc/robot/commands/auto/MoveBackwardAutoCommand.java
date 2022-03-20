@@ -9,6 +9,8 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+import static frc.robot.Constants.Autonomous.*;
+
 /** An example command that uses an example subsystem. */
 public class MoveBackwardAutoCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
@@ -32,13 +34,12 @@ public class MoveBackwardAutoCommand extends CommandBase {
   }
 
 
-  private final int MOVED = 8000;
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Math.abs(this.driveSystem.getFrontLeft().getSelectedSensorPosition()) < MOVED * 2.4) { // was=3
-      this.driveSystem.move(-0.7, 0);
+    if (Math.abs(this.driveSystem.getFrontLeft().getSelectedSensorPosition()) < MOVED) { // was=3
+      this.driveSystem.move(SPEED, 0);
     } else {
       this.driveSystem.move(0, 0);
       shooter.getFlywheelMotor().set(shooter.getCurrentSpeed());
@@ -48,7 +49,7 @@ public class MoveBackwardAutoCommand extends CommandBase {
       }
       this.shooter.getSolenoid().set(true);
 
-      if (set && Math.abs(shooter.getFlywheelMotor().getSelectedSensorPosition()) > 400000) {
+      if (set && Math.abs(shooter.getFlywheelMotor().getSelectedSensorPosition()) > FLYWHEEL_POSITION) {
         shooter.getGuideMotor().set(Constants.Shooter.Speed.MEDIUM);
       }
     }
@@ -66,6 +67,6 @@ public class MoveBackwardAutoCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return shooter.getFlywheelMotor().getSelectedSensorPosition() > 2_600_000L;
+    return shooter.getFlywheelMotor().getSelectedSensorPosition() > FINISH_POSITION;
   }
 }

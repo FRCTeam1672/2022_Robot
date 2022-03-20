@@ -16,11 +16,11 @@ import java.util.List;
 public class VisionPipeline implements edu.wpi.first.vision.VisionPipeline{
 
 	//Outputs
-	private Mat blurOutput = new Mat();
-	private Mat hslThresholdOutput = new Mat();
-	private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
-	private ArrayList<MatOfPoint> filterContoursOutput = new ArrayList<MatOfPoint>();
-	private ArrayList<MatOfPoint> convexHullsOutput = new ArrayList<MatOfPoint>();
+	private final Mat blurOutput = new Mat();
+	private final Mat hslThresholdOutput = new Mat();
+	private final ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
+	private final ArrayList<MatOfPoint> filterContoursOutput = new ArrayList<MatOfPoint>();
+	private final ArrayList<MatOfPoint> convexHullsOutput = new ArrayList<MatOfPoint>();
 
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -87,7 +87,6 @@ public class VisionPipeline implements edu.wpi.first.vision.VisionPipeline{
 
 	/**
 	 * This method is a generated getter for the output of a Find_Contours.
-	 * @return ArrayList<MatOfPoint> output from Find_Contours.
 	 */
 	public ArrayList<MatOfPoint> findContoursOutput() {
 		return findContoursOutput;
@@ -95,7 +94,6 @@ public class VisionPipeline implements edu.wpi.first.vision.VisionPipeline{
 
 	/**
 	 * This method is a generated getter for the output of a Filter_Contours.
-	 * @return ArrayList<MatOfPoint> output from Filter_Contours.
 	 */
 	public ArrayList<MatOfPoint> filterContoursOutput() {
 		return filterContoursOutput;
@@ -103,7 +101,6 @@ public class VisionPipeline implements edu.wpi.first.vision.VisionPipeline{
 
 	/**
 	 * This method is a generated getter for the output of a Convex_Hulls.
-	 * @return ArrayList<MatOfPoint> output from Convex_Hulls.
 	 */
 	public ArrayList<MatOfPoint> convexHullsOutput() {
 		return convexHullsOutput;

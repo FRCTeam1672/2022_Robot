@@ -24,7 +24,7 @@ import static frc.robot.Constants.Vision.CAMERA_IMG_WIDTH;
  * <p>
  * https://docs.wpilib.org/en/stable/docs/software/vision-processing/grip/using-generated-code-in-a-robot-program.html
  *
- * @author TJ & Ishaan
+ * @author TJ and Ishaan
  */
 public class Vision {
 
@@ -52,7 +52,6 @@ public class Vision {
         CvSink cvSink = CameraServer.getVideo(camera);
         if (!cvSink.isValid()) {
             Log.error("[VISION] Unable to validate the OpenCV video stream (cvSink). Please alert a programmer about this");
-            Log.error("The vision pipeline will now deactivate.");
             return;
         }
 

@@ -11,16 +11,16 @@ import frc.robot.Constants.Drive;
 import frc.robot.Constants.Controller.ControllerType;
 
 public class DriveSubsystem extends SubsystemBase {
-  private WPI_VictorSPX backLeft;
-  private WPI_VictorSPX backRight;
+  private final WPI_VictorSPX backLeft;
+  private final WPI_VictorSPX backRight;
 
-  private WPI_TalonSRX frontLeft;
-  private WPI_TalonSRX frontRight;
+  private final WPI_TalonSRX frontLeft;
+  private final WPI_TalonSRX frontRight;
 
-  private DifferentialDrive drive;
+  private final DifferentialDrive drive;
 
   // Remove XboxController Later
-  private XboxController xController;
+  private final XboxController xController;
   private int direction = -1;
   // private PIDController pidController;
 

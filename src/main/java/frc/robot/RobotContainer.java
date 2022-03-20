@@ -61,7 +61,7 @@ public class RobotContainer {
   private Vision vision;
   private final VisionFindAndOrientCommand visionFindAndOrientCommand = new VisionFindAndOrientCommand(vision, driveSubsystem);
 
-  private SendableChooser<CommandBase> autoChooser;
+  private final SendableChooser<CommandBase> autoChooser;
 
   private final Controls controls;
 

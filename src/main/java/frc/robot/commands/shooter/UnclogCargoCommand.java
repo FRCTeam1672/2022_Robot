@@ -2,6 +2,7 @@ package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.Log;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class UnclogCargoCommand extends CommandBase {
@@ -20,12 +21,10 @@ public class UnclogCargoCommand extends CommandBase {
         shooter.getFlywheelMotor().setSelectedSensorPosition(0);
     }
 
+    @Deprecated
+    //Why is this here????
     public void toggleAimAssist() {
-        if (aimAssist) {
-            aimAssist = false;
-        } else {
-            aimAssist = true;
-        }
+        aimAssist = !aimAssist;
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -33,7 +32,7 @@ public class UnclogCargoCommand extends CommandBase {
     public void execute() {
         shooter.getGuideMotor().set(-Constants.Shooter.Speed.SLOW);
         shooter.getFlywheelMotor().set(-Constants.Shooter.Speed.MEDIUM);
-        System.out.println(shooter.getFlywheelMotor().getSelectedSensorVelocity());
+        Log.debug("Shooter Sensor Velocity: " + shooter.getFlywheelMotor().getSelectedSensorVelocity());
     }
 
     // Called once the command ends or is interrupted.

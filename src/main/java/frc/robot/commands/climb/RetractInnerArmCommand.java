@@ -35,6 +35,6 @@ public class RetractInnerArmCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         return Math.abs(this.climbSystem.getLeftMotor()
-                .getSelectedSensorPosition()) > Climb.OUTER_CLIMB_REVS / 2;
+                .getSelectedSensorPosition()) > Climb.OUTER_CLIMB_REVS / 2.0;
     }
 }

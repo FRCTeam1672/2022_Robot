@@ -59,7 +59,8 @@ public class Controls {
 
     }
     /**
-     * <!> Please use the normal WPILib command structure<!>
+     * Please use the normal WPILib command structure
+     *
      * Binds a runnable to the specified control button. You can add an optional 2nd binding which will execute when the button is released.
      * @see Controls#bindButton(ControllerType, int, Command, Command)
      * @param type Which controller to pick
