@@ -1,7 +1,6 @@
 package  frc.robot.commands.climb;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.Climb;
 import frc.robot.subsystems.ClimbSubsystem;
 
 import static frc.robot.Constants.Climb.UNDO_AMOUNT;
