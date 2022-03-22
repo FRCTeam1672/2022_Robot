@@ -27,7 +27,7 @@ public class ExtendInnerArmCommand extends CommandBase {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        this.climbSystem.getCenterMotor().set(Climb.ZERO);
+        this.climbSystem.getCenterMotor().set(0);
     }
 
     // Returns true when the command should end.

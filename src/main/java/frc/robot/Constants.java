@@ -40,8 +40,7 @@ public final class Constants {
         public static final int LEFT = 22;
         public static final int CENTER = 23;
         public static final int RIGHT = 21;
-        //what
-        public static final double ZERO = 0.0;
+        
         public static final double MAX_FORWARDS = -1.0;
         public static final double MAX_BACKWARDS = 1.0;
 

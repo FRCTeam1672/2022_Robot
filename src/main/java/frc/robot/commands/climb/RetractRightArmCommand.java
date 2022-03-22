@@ -30,7 +30,7 @@ public class RetractRightArmCommand extends CommandBase {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        this.climbSystem.getRightMotor().set(Climb.ZERO);
+        this.climbSystem.getRightMotor().set(0);
     }
 
     // Returns true when the command should end.
