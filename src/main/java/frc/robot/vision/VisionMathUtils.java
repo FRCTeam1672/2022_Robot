@@ -61,5 +61,7 @@ public class VisionMathUtils {
 		double realWorld = 0.0;
 		realWorld = (pixel - (CAMERA_IMG_WIDTH/2)) / (CAMERA_IMG_WIDTH/2);
 		return realWorld;
+		//math (derogatory)
+		//^^^ by Emilie
 	}
 }
