@@ -1,6 +1,8 @@
 package frc.robot.vision;
 
+import static frc.robot.Constants.Vision.CAMERA_IMG_WIDTH;
 import java.util.ArrayList;
+import frc.robot.Constants;
 
 public class VisionMathUtils {
 	/**
@@ -48,5 +50,16 @@ public class VisionMathUtils {
 		// divides by number of values in the set
 		average /= values.size();
 		return average;
+	}
+	/** 
+	 * Converts a pixel into the Aiming Coordinate System.
+	 * This is very useful when calcuating how much the robot should turn, 
+	 * and can be used for turning. 
+	 * @param pixel The pixel which you want to be coordinated 
+	*/
+	public static double pixelToRealWorld(double pixel){
+		double realWorld = 0.0;
+		realWorld = (pixel - (CAMERA_IMG_WIDTH/2)) / (CAMERA_IMG_WIDTH/2);
+		return realWorld;
 	}
 }

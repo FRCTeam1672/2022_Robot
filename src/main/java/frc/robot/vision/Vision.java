@@ -128,16 +128,12 @@ public class Vision {
      */
     public double getTurnAmount() {
         double turnAmount = 0.0;
+        SmartDashboard.putNumber("Vision Turn Amount ", turnAmount);
         if (centerX == 0) {
             return turnAmount;
         }
-        double turn = centerX - (CAMERA_IMG_WIDTH / 2.0);
-        double final_turn = (turn * 0.0051) + 0.00075;
-
-        SmartDashboard.putNumber("turn", turn);
-        SmartDashboard.putNumber("turn_final", final_turn);
-
-        return final_turn;
+        turnAmount = VisionMathUtils.pixelToRealWorld(centerX);
+        return turnAmount;
     }
 
     /**
