@@ -31,28 +31,26 @@ public class Controls {
      * @param command Command to run while the button is being held
      * @param commandOnEnd A 2nd command to run when the user stops pressing it (can be NULL if there is none)
      */
-    public void bindButton(ControllerType type, int buttonNumber, Command command, Command commandOnEnd){
+    public void bindButton(ControllerType type, int buttonNumber, Command command, boolean continuous){
         //dont even think about passing "null"
         if(command == null) throw new IllegalArgumentException("Command parameter cannot be null");
         if(type == null) throw new IllegalArgumentException("Unable to bind controller button. Invalid controller type.");
 
         if(type == ControllerType.DRIVE){
             Button button = new JoystickButton(driveController, buttonNumber);
-            button.whileHeld(command);
-            if(commandOnEnd != null){
-                button.whenReleased(commandOnEnd);
-                Log.info("Bound button " + buttonNumber + ". Set whileHeld command to " + command.getName() + ", and set the 2nd command to " + commandOnEnd.getName());
-                return;
+            if(continuous) {
+                button.whileHeld(command);
+            } else {
+                button.whenPressed(command);
             }
             Log.info("Bound button " + buttonNumber + ". Set whileHeld command to " + command.getName());
         }
         else if(type == ControllerType.CLIMB){
             Button button = new JoystickButton(climbController, buttonNumber);
-            button.whileHeld(command);
-            if(commandOnEnd != null){
-                button.whenReleased(commandOnEnd);
-                Log.info("Bound button " + buttonNumber + ". Set whileHeld command to " + command.getName() + ", and set the 2nd command to " + commandOnEnd.getName());
-                return;
+            if(continuous) {
+                button.whileHeld(command);
+            } else {
+                button.whenPressed(command);
             }
             Log.info("Bound button " + buttonNumber + ". Set whileHeld command to " + command.getName());
         }
@@ -69,29 +67,26 @@ public class Controls {
      * @param runnableOnEnd A 2nd runnable to run when the user stops pressing it (can be NULL if there is none)
      */
     @Deprecated()
-    public void bindButton(ControllerType type, int buttonNumber, Runnable runnable, Runnable runnableOnEnd){
+    public void bindButton(ControllerType type, int buttonNumber, Runnable runnable, boolean continuous){
         //dont even think about passing "null"
         if(runnable == null) throw new IllegalArgumentException("Runnable parameter cannot be null");
         if(type == null) throw new IllegalArgumentException("Unable to bind controller button. Invalid controller type.");
 
         if(type == ControllerType.DRIVE){
             Button button = new JoystickButton(driveController, buttonNumber);
-            button.whileHeld(runnable);
-
-            if(runnableOnEnd != null){
-                button.whenReleased(runnableOnEnd);
-                Log.warn("Bound button " + button + " to a runnable, with a 2nd runnable being assigned.");
-                return;
+            if(continuous) {
+                button.whileHeld(runnable);
+            } else {
+                button.whenPressed(runnable);
             }
             Log.warn("Bound button " + button + " to a runnable.");
         }
         else if(type == ControllerType.CLIMB){
             Button button = new JoystickButton(climbController, buttonNumber);
-            button.whileHeld(runnable);
-            if(runnableOnEnd != null){
-                button.whenReleased(runnableOnEnd);
-                Log.warn("Bound button " + button + " to a runnable, with a 2nd runnable being assigned.");
-                return;
+            if(continuous) {
+                button.whileHeld(runnable);
+            } else {
+                button.whenPressed(runnable);
             }
             Log.warn("Bound button " + button + " to a runnable.");
         }

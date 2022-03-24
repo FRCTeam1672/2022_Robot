@@ -20,6 +20,8 @@ import frc.robot.subsystems.*;
 import frc.robot.vision.Vision;
 
 import static frc.robot.Constants.Controller.Joystick.*;
+import static frc.robot.Constants.Vision.CAMERA_IMG_WIDTH;
+import static frc.robot.Constants.Vision.CAMERA_IMG_HEIGHT;
 import static frc.robot.Constants.Controller.ControllerType.CLIMB;
 import static frc.robot.Constants.Controller.ControllerType.DRIVE;
 
@@ -99,7 +101,7 @@ public class RobotContainer {
     //Camera 1
     CameraServer.startAutomaticCapture();
     UsbCamera camera2 = CameraServer.startAutomaticCapture();
-    camera2.setResolution(360, 240);
+    camera2.setResolution(CAMERA_IMG_WIDTH, CAMERA_IMG_HEIGHT);
     camera2.setFPS(15);
     // camera2.setBrightness(40);
     camera2.setExposureManual(30);
@@ -110,29 +112,27 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //Configure Button Bindings Here
     Log.info("Starting configuration for button bindings. ");
-    Log.info("NOTICE: If you see any warnings for button bindings using runnable, you can ignore it, but do bug programming to move to the WPILib commands system.");
 
     //Bind drive buttons first
-    controls.bindButton(DRIVE, LB_BUTTON, intakeCargoCommand, null);
-    controls.bindButton(DRIVE, RB_BUTTON, shootCargoCommand, null);
-    controls.bindButton(DRIVE, Y_BUTTON, unclogCargoCommand, null);
-    controls.bindButton(DRIVE, X_BUTTON, visionFindAndOrientCommand, null);
-    controls.bindButton(DRIVE, B_BUTTON, toggleIntakeCommand, null);
-    controls.bindButton(DRIVE, RIGHT_STICK_BUTTON, driveSubsystem::toggleDirection, null);
-
-    controls.bindButton(DRIVE, BACK_BUTTON, undoInnerArmCommand, null);
-    controls.bindButton(DRIVE, LB_BUTTON, extendInnerArmCommand, null);
-    controls.bindButton(DRIVE, RB_BUTTON, retractInnerArmCommand, null);
+    controls.bindButton(DRIVE, LB_BUTTON, intakeCargoCommand, true);
+    controls.bindButton(DRIVE, RB_BUTTON, shootCargoCommand, true);
+    controls.bindButton(DRIVE, Y_BUTTON, unclogCargoCommand, true);
+    controls.bindButton(DRIVE, X_BUTTON, visionFindAndOrientCommand, true);
+    controls.bindButton(DRIVE, B_BUTTON, toggleIntakeCommand, false);
+    controls.bindButton(DRIVE, RIGHT_STICK_BUTTON, driveSubsystem::toggleDirection, false);
+    // controls.bindButton(DRIVE, BACK_BUTTON, undoInnerArmCommand, true);
+    // controls.bindButton(DRIVE, LB_BUTTON, extendInnerArmCommand, true);
+    // controls.bindButton(DRIVE, RB_BUTTON, retractInnerArmCommand, true);
 
     //Do shooter button now
-    controls.bindButton(CLIMB, START_BUTTON, shooterSubsystem::toggleSpeed, null);
-    controls.bindButton(CLIMB, A_BUTTON, extendArmsCommand, null);
-    controls.bindButton(CLIMB, B_BUTTON, retractInnerArmCommand, null);
-    controls.bindButton(CLIMB, BACK_BUTTON, undoOuterArmsCommand, null);
-    controls.bindButton(CLIMB, LB_BUTTON, retractLeftArmCommand, null);
-    controls.bindButton(CLIMB, RB_BUTTON, retractRightArmCommand, null);
-    controls.bindButton(CLIMB, Y_BUTTON, () -> driveSubsystem.changeSpeed(0.1), null);
-    controls.bindButton(CLIMB, X_BUTTON, () -> driveSubsystem.changeSpeed(-0.1), null);
+    controls.bindButton(CLIMB, START_BUTTON, shooterSubsystem::toggleSpeed, false);
+    controls.bindButton(CLIMB, A_BUTTON, extendArmsCommand, true);
+    controls.bindButton(CLIMB, B_BUTTON, retractInnerArmCommand, true);
+    controls.bindButton(CLIMB, BACK_BUTTON, undoOuterArmsCommand, true);
+    controls.bindButton(CLIMB, LB_BUTTON, retractLeftArmCommand, true);
+    controls.bindButton(CLIMB, RB_BUTTON, retractRightArmCommand, true);
+    controls.bindButton(CLIMB, Y_BUTTON, () -> driveSubsystem.changeSpeed(0.1), false);
+    controls.bindButton(CLIMB, X_BUTTON, () -> driveSubsystem.changeSpeed(-0.1), false);
     Log.info("Finished configuration for button bindings. ");
   }
 
