@@ -55,13 +55,13 @@ public class RobotContainer {
   private final MoveBackwardAutoCommand moveForwardCommand = new MoveBackwardAutoCommand(driveSubsystem, shooterSubsystem);
   private final ShootLowIntakeShootCommand shootLowCommand = new ShootLowIntakeShootCommand(driveSubsystem, shooterSubsystem);
 
-  private final PneumaticsControlModule pcm = new PneumaticsControlModule(0);
+  //private final PneumaticsControlModule pcm = new PneumaticsControlModule(0);
 
   private final XboxController shootController = new XboxController(DRIVE.ordinal());
   private final XboxController hangController = new XboxController(CLIMB.ordinal());
 
   private Vision vision;
-  private final VisionFindAndOrientCommand visionFindAndOrientCommand = new VisionFindAndOrientCommand(vision, driveSubsystem);
+  private VisionFindAndOrientCommand visionFindAndOrientCommand;
 
   private final SendableChooser<CommandBase> autoChooser;
 
@@ -73,9 +73,9 @@ public class RobotContainer {
     Log.info("Started robot container");
 
     controls = new Controls(shootController, hangController);
-    // Configure the button bindings
-    configureButtonBindings();
     configureVision();
+    configureButtonBindings();
+    
 
     autoChooser = new SendableChooser<>();
 
@@ -106,6 +106,8 @@ public class RobotContainer {
     // camera2.setBrightness(40);
     camera2.setExposureManual(30);
     vision = new Vision(camera2, driveSubsystem);
+
+    visionFindAndOrientCommand = new VisionFindAndOrientCommand(vision, driveSubsystem);
     //Vision config finished message is sent by Vision#initVisionSystem
   }
 

@@ -6,6 +6,7 @@ import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 import frc.robot.Log;
 import frc.robot.subsystems.DriveSubsystem;
 import org.opencv.core.Mat;
@@ -16,8 +17,7 @@ import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
 
-import static frc.robot.Constants.Vision.CAMERA_IMG_HEIGHT;
-import static frc.robot.Constants.Vision.CAMERA_IMG_WIDTH;
+import static frc.robot.Constants.Vision.*;
 
 /**
  * Handles the entire vision system
@@ -30,14 +30,14 @@ public class Vision {
 
     private final UsbCamera camera;
     private final DriveSubsystem driveSubsystem;
-    private VisionPipeline visionPipeline;
+    private GripPipeline visionPipeline;
     private double centerX = 0.0;
     private final Object imgLock = new Object();
 
     public Vision(UsbCamera camera, DriveSubsystem driveSubsystem) {
         this.camera = camera;
         this.driveSubsystem = driveSubsystem;
-        this.visionPipeline = new VisionPipeline();
+        this.visionPipeline = new GripPipeline();
         this.initVisionSystem();
     }
 
@@ -48,7 +48,7 @@ public class Vision {
      */
     private void initVisionSystem() {
 
-        visionPipeline = new VisionPipeline();
+        //visionPipeline = new VisionPipeline();
         CvSink cvSink = CameraServer.getVideo(camera);
         if (!cvSink.isValid()) {
             Log.error("[VISION] Unable to validate the OpenCV video stream (cvSink). Please alert a programmer about this");
@@ -74,25 +74,39 @@ public class Vision {
 
             if (!pipeline.filterContoursOutput().isEmpty()) {
                 final ArrayList<Double> rectangleCenters = new ArrayList<>();
+                final ArrayList<Double> rectangleYs = new ArrayList<>();
                 pipeline.filterContoursOutput().forEach(matOfPoint -> {
                     Rect r = Imgproc.boundingRect(matOfPoint);
                     synchronized (imgLock) {
+                        Log.debug(r.y+" ");
                         double recCenter = r.x + r.width / 2.0;
-                        rectangleCenters.add(recCenter);
+                        if(r.y>CONTOUR_MIN_Y && r.y<CONTOUR_MAX_Y) {
+                            rectangleCenters.add(recCenter);
+                            rectangleYs.add(r.y + r.height / 2.0);
+                        }
                     }
                 });
-                double averageCenter = VisionMathUtils.getDeviationWeightedAverage(rectangleCenters);
+                for(int i=0; i<rectangleCenters.size(); i++) {
+                    double recCenter = rectangleCenters.get(i);
+                    double y = rectangleYs.get(i);
+                    Point point1 = new Point(recCenter - 2, y - 2);
+                    Point point2 = new Point(recCenter + 2, y + 2);
+                    Imgproc.rectangle(cloneMat, point1, point2, color, 2);
+                }
+
+                System.out.println();
+                double averageCenter = VisionMathUtils.getAverage(rectangleCenters);
                 synchronized (imgLock) {
                     centerX = averageCenter;
                 }
                 double y = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0)).y;
                 Point point1 = new Point(averageCenter - 5, y - 5);
                 Point point2 = new Point(averageCenter + 5, y + 5);
-                Imgproc.rectangle(cloneMat, point1, point2, color, 2);
+                Imgproc.rectangle(cloneMat, point1, point2, new Scalar(255, 0, 0), 2);
             }
             // If there is no contour detected (pipeline doesn't see anything, we set the centerX to 0.0
             // We also reset the mat to show the current stream so the rectangle goes away
-            else {
+            else { 
                 centerX = 0.0;
                 cloneMat = mat;
             }
@@ -127,12 +141,14 @@ public class Vision {
      * @return The turn
      */
     public double getTurnAmount() {
+        SmartDashboard.putNumber("X Diff", centerX - CAMERA_IMG_WIDTH/2);
+
         double turnAmount = 0.0;
-        SmartDashboard.putNumber("Vision Turn Amount ", turnAmount);
         if (centerX == 0) {
             return turnAmount;
         }
         turnAmount = VisionMathUtils.pixelToRealWorld(centerX);
+        SmartDashboard.putNumber("Vision Turn Amount ", turnAmount);
         return turnAmount;
     }
 
@@ -145,6 +161,6 @@ public class Vision {
             driveSubsystem.move(0, 0);
             return;
         }
-        driveSubsystem.move(0, turnAmount);
+        //driveSubsystem.move(0, turnAmount);
     }
 }

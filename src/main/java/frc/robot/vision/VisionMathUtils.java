@@ -27,9 +27,10 @@ public class VisionMathUtils {
 		// calculates average with new bounds
 		double average = 0.0;
 		int numOfNonOutliers = 0;
+		final double devation = 1.3;
 		for (double i : values) {
 			// outlier is a data point outside 1.3 times standard deviation from the mean
-			if (((mean + standardDeviation) * 1.3) > i && ((mean - standardDeviation) * 1.3) < i) {
+			if (((mean + standardDeviation) * devation) > i && ((mean - standardDeviation) * devation) < i) {
 				average += i;
 				numOfNonOutliers++;
 			}

@@ -53,6 +53,8 @@ public final class Constants {
     public static class Vision {
         public static final int CAMERA_IMG_WIDTH = 480;
         public static final int CAMERA_IMG_HEIGHT = 240;
+        public static final int CONTOUR_MIN_Y = 110;
+        public static final int CONTOUR_MAX_Y = 300;
     }
 
     public static class Controller {
