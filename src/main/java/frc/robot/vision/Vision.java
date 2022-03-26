@@ -96,8 +96,8 @@ public class Vision {
                     Imgproc.rectangle(cloneMat, point1, point2, color, 3);
                 }
                 System.out.println();
-                double averageCenter = VisionMathUtils.getAverage(rectangleCenters);
-                double averageY = VisionMathUtils.getAverage(rectangleYs);
+                double averageCenter = DerogatoryMathUtils.getAverage(rectangleCenters);
+                double averageY = DerogatoryMathUtils.getAverage(rectangleYs);
                 synchronized (imgLock) {
                     centerX = averageCenter;
                 }
@@ -149,7 +149,7 @@ public class Vision {
         if (centerX == 0) {
             return turnAmount;
         }
-        turnAmount = VisionMathUtils.pixelToRealWorld(centerX);
+        turnAmount = DerogatoryMathUtils.pixelToRealWorld(centerX);
         SmartDashboard.putNumber("Vision Turn Amount", turnAmount);
         return turnAmount;
     }

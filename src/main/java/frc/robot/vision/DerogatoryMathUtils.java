@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import static frc.robot.Constants.Vision.CAMERA_IMG_WIDTH;
 
-public class VisionMathUtils {
+public class DerogatoryMathUtils {
 	/**
 	 * Do not use this method. For some reason, it is not working.
 	 *
