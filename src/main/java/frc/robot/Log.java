@@ -10,7 +10,7 @@ import static frc.robot.Constants.*;
 public class Log {
 
     public static void info(String msg){
-        if(!IS_DEBUGGING || DONT_LOG_INFO) return;
+        if(DONT_LOG_INFO) return;
 
         Date date = new Date();
         DateFormat formatter;

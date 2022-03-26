@@ -6,7 +6,6 @@ import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
 import frc.robot.Log;
 import frc.robot.subsystems.DriveSubsystem;
 import org.opencv.core.Mat;
@@ -42,9 +41,11 @@ public class Vision {
     }
 
     /**
-     * Init the vision system Some tasks that are handled include: - Putting the stream of the
-     * camera on Shuffleboard - Creating our images and handling them using {@link VisionPipeline} -
-     * Putting red rectangle - Updating current location of the center of the reflective tape
+     * Init the vision system Some tasks that are handled include:
+     * - Putting the stream of the camera on Shuffleboard
+     * - Creating our images and handling them using {@link GripPipeline}
+     * - Putting red rectangle
+     * - Updating current location of the center of the reflective tape
      */
     private void initVisionSystem() {
 
@@ -78,35 +79,36 @@ public class Vision {
                 pipeline.filterContoursOutput().forEach(matOfPoint -> {
                     Rect r = Imgproc.boundingRect(matOfPoint);
                     synchronized (imgLock) {
-                        Log.debug(r.y+" ");
+                        Log.debug(r.y + " ");
                         double recCenter = r.x + r.width / 2.0;
-                        if(r.y>CONTOUR_MIN_Y && r.y<CONTOUR_MAX_Y) {
+                        if (r.y > CONTOUR_MIN_Y/* && r.y<CONTOUR_MAX_Y*/) {
                             rectangleCenters.add(recCenter);
                             rectangleYs.add(r.y + r.height / 2.0);
                         }
                     }
                 });
-                for(int i=0; i<rectangleCenters.size(); i++) {
+                //Put the rectangles on the image
+                for (int i = 0; i < rectangleCenters.size(); i++) {
                     double recCenter = rectangleCenters.get(i);
                     double y = rectangleYs.get(i);
                     Point point1 = new Point(recCenter - 2, y - 2);
                     Point point2 = new Point(recCenter + 2, y + 2);
-                    Imgproc.rectangle(cloneMat, point1, point2, color, 2);
+                    Imgproc.rectangle(cloneMat, point1, point2, color, 3);
                 }
-
                 System.out.println();
                 double averageCenter = VisionMathUtils.getAverage(rectangleCenters);
+                double averageY = VisionMathUtils.getAverage(rectangleYs);
                 synchronized (imgLock) {
                     centerX = averageCenter;
                 }
-                double y = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0)).y;
-                Point point1 = new Point(averageCenter - 5, y - 5);
-                Point point2 = new Point(averageCenter + 5, y + 5);
-                Imgproc.rectangle(cloneMat, point1, point2, new Scalar(255, 0, 0), 2);
+                // Put the center of the hub on the image
+                Point point1 = new Point(averageCenter - 5, averageY - 5);
+                Point point2 = new Point(averageCenter + 5, averageY + 5);
+                Imgproc.rectangle(cloneMat, point1, point2, new Scalar(0, 255, 0), 5);
             }
             // If there is no contour detected (pipeline doesn't see anything, we set the centerX to 0.0
             // We also reset the mat to show the current stream so the rectangle goes away
-            else { 
+            else {
                 centerX = 0.0;
                 cloneMat = mat;
             }
@@ -141,14 +143,14 @@ public class Vision {
      * @return The turn
      */
     public double getTurnAmount() {
-        SmartDashboard.putNumber("X Diff", centerX - CAMERA_IMG_WIDTH/2);
+        SmartDashboard.putNumber("X Diff", centerX - CAMERA_IMG_WIDTH / 2.0);
 
         double turnAmount = 0.0;
         if (centerX == 0) {
             return turnAmount;
         }
         turnAmount = VisionMathUtils.pixelToRealWorld(centerX);
-        SmartDashboard.putNumber("Vision Turn Amount ", turnAmount);
+        SmartDashboard.putNumber("Vision Turn Amount", turnAmount);
         return turnAmount;
     }
 

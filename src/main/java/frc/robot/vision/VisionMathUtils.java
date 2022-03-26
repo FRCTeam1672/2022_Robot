@@ -1,14 +1,17 @@
 package frc.robot.vision;
 
-import static frc.robot.Constants.Vision.CAMERA_IMG_WIDTH;
 import java.util.ArrayList;
-import frc.robot.Constants;
+
+import static frc.robot.Constants.Vision.CAMERA_IMG_WIDTH;
 
 public class VisionMathUtils {
 	/**
-	 * @param values
+	 * Do not use this method. For some reason, it is not working.
+	 *
+	 * @param values The values to average
 	 * @return standard deviation weighted mean
 	 */
+	@Deprecated()
 	public static double getDeviationWeightedAverage(ArrayList<Double> values) {
 		// stores unweighted mean
 		double mean = getAverage(values);
@@ -27,10 +30,9 @@ public class VisionMathUtils {
 		// calculates average with new bounds
 		double average = 0.0;
 		int numOfNonOutliers = 0;
-		final double devation = 1.3;
+		final double deviation = 1.2;
 		for (double i : values) {
-			// outlier is a data point outside 1.3 times standard deviation from the mean
-			if (((mean + standardDeviation) * devation) > i && ((mean - standardDeviation) * devation) < i) {
+			if (((mean + standardDeviation) * deviation) > i && ((mean - standardDeviation) * deviation) < i) {
 				average += i;
 				numOfNonOutliers++;
 			}
@@ -40,29 +42,41 @@ public class VisionMathUtils {
 		return average;
 	}
 
-	// returns mean
+	/**
+	 *
+	 * @param values The values to average
+	 * @return The average of the values
+	 */
 	public static double getAverage(ArrayList<Double> values) {
-		// stores mean
 		double average = 0.0;
-		// adds all values together
 		for (double i : values) {
 			average += i;
 		}
-		// divides by number of values in the set
 		average /= values.size();
 		return average;
 	}
 	/** 
 	 * Converts a pixel into the Aiming Coordinate System.
-	 * This is very useful when calcuating how much the robot should turn, 
-	 * and can be used for turning. 
+	 * This is very useful when calculating how much the robot should turn,
+	 * and can be used for turning.
+	 *
+	 * If the turn amount is greater than 0.75, then the robot will forcefully only turn 0.75. This is to prevent the robot from turning too far.
+	 * If the turn amount is less than 0.25, then the robot will forcefully only turn 0.25. This is to prevent issues of the robot not moving at all.
 	 * @param pixel The pixel which you want to be coordinated 
 	*/
 	public static double pixelToRealWorld(double pixel){
-		double realWorld = 0.0;
-		realWorld = (pixel - (CAMERA_IMG_WIDTH/2)) / (CAMERA_IMG_WIDTH/2);
-		return realWorld;
+		double realWorld = (pixel - (CAMERA_IMG_WIDTH / 2.0)) / (CAMERA_IMG_WIDTH / 2.0);
 		//math (derogatory)
 		//^^^ by Emilie
+
+		if(realWorld > 0.75){
+			//Forcefully make the robot not turn too far/fast
+			realWorld = 0.75;
+		}
+		else if(realWorld < 0.25){
+			//Forcefully make the robot not turn too little
+			realWorld = 0.25;
+		}
+		return realWorld;
 	}
 }
