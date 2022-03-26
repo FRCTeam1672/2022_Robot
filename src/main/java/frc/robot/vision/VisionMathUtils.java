@@ -71,11 +71,19 @@ public class VisionMathUtils {
 
 		if(realWorld > 0.75){
 			//Forcefully make the robot not turn too far/fast
-			realWorld = 0.75;
+			return 0.75;
 		}
-		else if(realWorld < 0.25){
+		else if(realWorld < -0.75){
+			//Forcefully make the robot not turn too far/fast
+			return -0.75;
+		}
+		else if(realWorld > 0.0 && realWorld < 0.25){
 			//Forcefully make the robot not turn too little
-			realWorld = 0.25;
+			return 0.25;
+		}
+		else if(realWorld < 0.0 && realWorld > -0.25){
+			//Forcefully make the robot not turn too little
+			return -0.25;
 		}
 		return realWorld;
 	}
