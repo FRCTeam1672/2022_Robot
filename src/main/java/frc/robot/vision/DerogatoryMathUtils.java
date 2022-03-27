@@ -2,7 +2,7 @@ package frc.robot.vision;
 
 import java.util.ArrayList;
 
-import static frc.robot.Constants.Vision.CAMERA_IMG_WIDTH;
+import static frc.robot.Constants.Vision.*;
 
 public class DerogatoryMathUtils {
 	/**
@@ -69,19 +69,27 @@ public class DerogatoryMathUtils {
 		//math (derogatory)
 		//^^^ by Emilie
 
-		if(realWorld > 0.75){
+		if(realWorld > MAX_TURN){
 			//Forcefully make the robot not turn too far/fast
 			return 0.75;
 		}
-		else if(realWorld < -0.75){
+		else if(realWorld < -MAX_TURN){
 			//Forcefully make the robot not turn too far/fast
 			return -0.75;
 		}
-		else if(realWorld > 0.0 && realWorld < 0.25){
+		//deadzone | the area where it is considered looking at the center of the target
+		else if(realWorld > 0.0 && realWorld <= DEADBAND){
+			return 0.0;
+		}
+		else if(realWorld < 0.0 && realWorld >= -DEADBAND){
+			return 0.0;
+		}
+		//Make the robot turn at least 0.25
+		else if(realWorld > 0.0 && realWorld < MIN_TURN){
 			//Forcefully make the robot not turn too little
 			return 0.25;
 		}
-		else if(realWorld < 0.0 && realWorld > -0.25){
+		else if(realWorld < 0.0 && realWorld > -MIN_TURN){
 			//Forcefully make the robot not turn too little
 			return -0.25;
 		}
