@@ -12,7 +12,7 @@ public class ExtendOuterArmsCommand extends CommandBase {
 
     public ExtendOuterArmsCommand(ClimbSubsystem subsystem) {
         this.climbSystem = subsystem;
-        addRequirements(this.climbSystem);
+        //addRequirements(this.climbSystem);
     }
 
     // Called when the command is initially scheduled.
@@ -20,6 +20,7 @@ public class ExtendOuterArmsCommand extends CommandBase {
     public void initialize() {
         this.climbSystem.getLeftMotor().setSelectedSensorPosition(0);
         this.climbSystem.getRightMotor().setSelectedSensorPosition(0);
+        this.climbSystem.getCenterSolenoid().set(false);
     }
 
     // Called every time the scheduler runs while the command is scheduled.

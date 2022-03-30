@@ -22,7 +22,7 @@ public class RetractInnerArmCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        this.climbSystem.getCenterMotor().set(Climb.MAX_BACKWARDS * 0.75);
+        this.climbSystem.getCenterMotor().set(Climb.MAX_FORWARDS * 0.75);
     }
 
     // Called once the command ends or is interrupted.

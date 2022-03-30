@@ -10,7 +10,7 @@ public class ShootCargoCommand extends CommandBase {
     public ShootCargoCommand(ShooterSubsystem subsystem) {
         this.shooter = subsystem;
         // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(subsystem);
+        //addRequirements(subsystem);
     }
 
     // Called when the command is initially scheduled.

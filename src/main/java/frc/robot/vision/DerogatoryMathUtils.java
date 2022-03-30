@@ -1,7 +1,7 @@
 package frc.robot.vision;
 
 import java.util.ArrayList;
-
+import frc.robot.JoeException;
 import static frc.robot.Constants.Vision.*;
 
 public class DerogatoryMathUtils {
@@ -65,17 +65,18 @@ public class DerogatoryMathUtils {
 	 * @param pixel The pixel which you want to be coordinated 
 	*/
 	public static double pixelToRealWorld(double pixel){
+		pixel += TURN_OFFSET;
 		double realWorld = (pixel - (CAMERA_IMG_WIDTH / 2.0)) / (CAMERA_IMG_WIDTH / 2.0);
 		//math (derogatory)
 		//^^^ by Emilie
 
-		if(realWorld > MAX_TURN){
+		if(realWorld > MIN_TURN){
 			//Forcefully make the robot not turn too far/fast
-			return 0.75;
+			return MAX_TURN;
 		}
-		else if(realWorld < -MAX_TURN){
+		else if(realWorld < -MIN_TURN){
 			//Forcefully make the robot not turn too far/fast
-			return -0.75;
+			return -MAX_TURN;
 		}
 		//deadzone | the area where it is considered looking at the center of the target
 		else if(realWorld > 0.0 && realWorld <= DEADBAND){
@@ -87,12 +88,12 @@ public class DerogatoryMathUtils {
 		//Make the robot turn at least 0.25
 		else if(realWorld > 0.0 && realWorld < MIN_TURN){
 			//Forcefully make the robot not turn too little
-			return 0.25;
+			return MIN_TURN;
 		}
 		else if(realWorld < 0.0 && realWorld > -MIN_TURN){
 			//Forcefully make the robot not turn too little
-			return -0.25;
+			return -MIN_TURN;
 		}
-		return realWorld;
+		return 0;
 	}
 }

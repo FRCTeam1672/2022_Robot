@@ -127,8 +127,8 @@
     <language>Java</language>
     <className>GripPipeline</className>
     <implementWpilibPipeline>true</implementWpilibPipeline>
-    <saveDir>C:\Users\Robotics\GRIP\2022_GRIP_VISON_TEST</saveDir>
-    <packageName>frc.robot</packageName>
+    <saveDir>C:\Users\Robotics\Documents\2022_Robot\src\main\java\frc\robot\vision</saveDir>
+    <packageName>frc.robot.vision</packageName>
     <moduleName>grip</moduleName>
   </codeGenerationSettings>
 </grip:Pipeline>

@@ -122,9 +122,9 @@ public class RobotContainer {
     controls.bindButton(DRIVE, X_BUTTON, visionFindAndOrientCommand, true);
     controls.bindButton(DRIVE, B_BUTTON, toggleIntakeCommand, false);
     controls.bindButton(DRIVE, RIGHT_STICK_BUTTON, driveSubsystem::toggleDirection, false);
-    // controls.bindButton(DRIVE, BACK_BUTTON, undoInnerArmCommand, true);
-    // controls.bindButton(DRIVE, LB_BUTTON, extendInnerArmCommand, true);
-    // controls.bindButton(DRIVE, RB_BUTTON, retractInnerArmCommand, true);
+    controls.bindButton(DRIVE, LEFT_STICK_BUTTON, undoInnerArmCommand, true);
+    controls.bindButton(DRIVE, BACK_BUTTON, extendInnerArmCommand, true);
+    controls.bindButton(DRIVE, START_BUTTON, retractInnerArmCommand, true);
 
     //Do shooter button now
     controls.bindButton(CLIMB, START_BUTTON, shooterSubsystem::toggleSpeed, false);

@@ -56,9 +56,10 @@ public final class Constants {
         public static final int CONTOUR_MIN_Y = 110;
         public static final int CONTOUR_MAX_Y = 300;
 
-        public static final double MAX_TURN = 0.75;
-        public static final double MIN_TURN = 0.25;
-        public static final double DEADBAND = 0.1;
+        public static final double MAX_TURN = 0.5;
+        public static final double MIN_TURN = 0.42;
+        public static final double DEADBAND = 0.06;
+        public static final double TURN_OFFSET = 50;
     }
 
     public static class Controller {

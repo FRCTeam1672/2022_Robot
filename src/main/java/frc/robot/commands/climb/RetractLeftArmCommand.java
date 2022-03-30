@@ -11,7 +11,7 @@ public class RetractLeftArmCommand extends CommandBase {
 
     public RetractLeftArmCommand(ClimbSubsystem subsystem) {
         this.climbSystem = subsystem;
-        addRequirements(this.climbSystem);
+        //addRequirements(this.climbSystem);
     }
 
     // Called when the command is initially scheduled.

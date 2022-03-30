@@ -12,7 +12,7 @@ public class IntakeCargoCommand extends CommandBase {
     public IntakeCargoCommand(ShooterSubsystem subsystem) {
         this.shooter = subsystem;
         // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(subsystem);
+        //addRequirements(subsystem);
     }
 
     // Called when the command is initially scheduled.
