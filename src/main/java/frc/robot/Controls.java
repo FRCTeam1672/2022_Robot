@@ -29,7 +29,7 @@ public class Controls {
      * @param type Which controller to pick
      * @param buttonNumber The number of the button. You can use the {@link Constants.Controller.Joystick} class to get your bindings.
      * @param command Command to run while the button is being held
-     * @param continuous Whether or not the command should be run continuously while the button is held
+     * @param continuous Whether the command should be run continuously while the button is held
      */
     public void bindButton(ControllerType type, int buttonNumber, Command command, boolean continuous){
         //dont even think about passing "null"
@@ -64,7 +64,7 @@ public class Controls {
      * @param type Which controller to pick
      * @param buttonNumber The number of the button. You can use the {@link Constants.Controller.Joystick} class to get your bindings.
      * @param runnable Runnable to run while the button is being held
-     * @param continuous Whether or not the command should be run continuously while the button is held
+     * @param continuous Whether the command should be run continuously while the button is held
      */
     @Deprecated()
     public void bindButton(ControllerType type, int buttonNumber, Runnable runnable, boolean continuous){

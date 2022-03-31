@@ -7,23 +7,25 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.commands.auto.*;
+import frc.robot.commands.auto.MoveBackwardAutoCommand;
+import frc.robot.commands.auto.VisionFindAndOrientCommand;
 import frc.robot.commands.climb.*;
 import frc.robot.commands.shooter.*;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.vision.Vision;
 
-import static frc.robot.Constants.Controller.Joystick.*;
-import static frc.robot.Constants.Vision.CAMERA_IMG_WIDTH;
-import static frc.robot.Constants.Vision.CAMERA_IMG_HEIGHT;
 import static frc.robot.Constants.Controller.ControllerType.CLIMB;
 import static frc.robot.Constants.Controller.ControllerType.DRIVE;
+import static frc.robot.Constants.Controller.Joystick.*;
+import static frc.robot.Constants.Vision.CAMERA_IMG_HEIGHT;
+import static frc.robot.Constants.Vision.CAMERA_IMG_WIDTH;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -54,6 +56,9 @@ public class RobotContainer {
 
   private final MoveBackwardAutoCommand moveForwardCommand = new MoveBackwardAutoCommand(driveSubsystem, shooterSubsystem);
   private final ShootLowIntakeShootCommand shootLowCommand = new ShootLowIntakeShootCommand(driveSubsystem, shooterSubsystem);
+
+  private final UnlockOuterArmsCommand unlockOuterArmsCommand = new UnlockOuterArmsCommand(climbSubsystem);
+  private final UnlockInnerArmCommand unlockInnerArmCommand = new UnlockInnerArmCommand(climbSubsystem);
 
   //private final PneumaticsControlModule pcm = new PneumaticsControlModule(0);
 
@@ -120,6 +125,7 @@ public class RobotContainer {
     controls.bindButton(DRIVE, RB_BUTTON, shootCargoCommand, true);
     controls.bindButton(DRIVE, Y_BUTTON, unclogCargoCommand, true);
     controls.bindButton(DRIVE, X_BUTTON, visionFindAndOrientCommand, true);
+    controls.bindButton(DRIVE, A_BUTTON, unlockInnerArmCommand, false);
     controls.bindButton(DRIVE, B_BUTTON, toggleIntakeCommand, false);
     controls.bindButton(DRIVE, RIGHT_STICK_BUTTON, driveSubsystem::toggleDirection, false);
     controls.bindButton(DRIVE, LEFT_STICK_BUTTON, undoInnerArmCommand, true);
@@ -129,12 +135,11 @@ public class RobotContainer {
     //Do shooter button now
     controls.bindButton(CLIMB, START_BUTTON, shooterSubsystem::toggleSpeed, false);
     controls.bindButton(CLIMB, A_BUTTON, extendArmsCommand, true);
-    controls.bindButton(CLIMB, B_BUTTON, retractInnerArmCommand, true);
+    controls.bindButton(CLIMB, Y_BUTTON, () -> driveSubsystem.changeSpeed(0.1), false);
+    controls.bindButton(CLIMB, X_BUTTON, () -> driveSubsystem.changeSpeed(-0.1), false);
     controls.bindButton(CLIMB, BACK_BUTTON, undoOuterArmsCommand, true);
     controls.bindButton(CLIMB, LB_BUTTON, retractLeftArmCommand, true);
     controls.bindButton(CLIMB, RB_BUTTON, retractRightArmCommand, true);
-    controls.bindButton(CLIMB, Y_BUTTON, () -> driveSubsystem.changeSpeed(0.1), false);
-    controls.bindButton(CLIMB, X_BUTTON, () -> driveSubsystem.changeSpeed(-0.1), false);
     Log.info("Finished configuration for button bindings. ");
   }
 
