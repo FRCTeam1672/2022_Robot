@@ -50,15 +50,15 @@ public class RobotContainer {
   private final UndoInnerArmCommand undoInnerArmCommand = new UndoInnerArmCommand(climbSubsystem);
   private final UndoOuterArmsCommand undoOuterArmsCommand = new UndoOuterArmsCommand(climbSubsystem);
 
+  private final UnlockInnerArmCommand unlockInnerArmCommand = new UnlockInnerArmCommand(climbSubsystem);
+  private final UnlockOuterArmsCommand unlockOuterArmsCommand = new UnlockOuterArmsCommand(climbSubsystem);
+
   private final RetractInnerArmCommand retractInnerArmCommand = new RetractInnerArmCommand(climbSubsystem);
   private final RetractLeftArmCommand retractLeftArmCommand = new RetractLeftArmCommand(climbSubsystem);
   private final RetractRightArmCommand retractRightArmCommand = new RetractRightArmCommand(climbSubsystem);
 
   private final MoveBackwardAutoCommand moveForwardCommand = new MoveBackwardAutoCommand(driveSubsystem, shooterSubsystem);
   private final ShootLowIntakeShootCommand shootLowCommand = new ShootLowIntakeShootCommand(driveSubsystem, shooterSubsystem);
-
-  private final UnlockOuterArmsCommand unlockOuterArmsCommand = new UnlockOuterArmsCommand(climbSubsystem);
-  private final UnlockInnerArmCommand unlockInnerArmCommand = new UnlockInnerArmCommand(climbSubsystem);
 
   //private final PneumaticsControlModule pcm = new PneumaticsControlModule(0);
 
