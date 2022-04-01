@@ -85,8 +85,8 @@ public class RobotContainer {
     autoChooser = new SendableChooser<>();
 
     // add SendableChooser for auto command to run
-    autoChooser.addOption("Back + High", moveForwardCommand);
-    autoChooser.setDefaultOption("Shoot Low, Intake", shootLowCommand);
+    autoChooser.setDefaultOption("Back + High", moveForwardCommand);
+    autoChooser.addOption("Shoot Low, Intake", shootLowCommand);
 
     SmartDashboard.putString("Shooter Speed", shooterSubsystem.getShooterSpeed());
     long currentTime = System.currentTimeMillis();
