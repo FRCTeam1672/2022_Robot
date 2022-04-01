@@ -130,16 +130,45 @@ public class RobotContainer {
     controls.bindButton(DRIVE, RIGHT_STICK_BUTTON, driveSubsystem::toggleDirection, false);
     controls.bindButton(DRIVE, LEFT_STICK_BUTTON, undoInnerArmCommand, true);
     controls.bindButton(DRIVE, BACK_BUTTON, extendInnerArmCommand, true);
+
+    // "temporary" hack
+    controls.bindButton(DRIVE, BACK_BUTTON, ()->this.climbSubsystem.getCenterMotor().setSelectedSensorPosition(0), false);
     controls.bindButton(DRIVE, START_BUTTON, retractInnerArmCommand, true);
 
     //Do shooter button now
     controls.bindButton(CLIMB, START_BUTTON, shooterSubsystem::toggleSpeed, false);
-    controls.bindButton(CLIMB, A_BUTTON, extendArmsCommand, true);
+    controls.bindButton(CLIMB, A_BUTTON, extendArmsCommand, false);
     controls.bindButton(CLIMB, Y_BUTTON, () -> driveSubsystem.changeSpeed(0.1), false);
     controls.bindButton(CLIMB, X_BUTTON, () -> driveSubsystem.changeSpeed(-0.1), false);
     controls.bindButton(CLIMB, BACK_BUTTON, undoOuterArmsCommand, true);
     controls.bindButton(CLIMB, LB_BUTTON, retractLeftArmCommand, true);
     controls.bindButton(CLIMB, RB_BUTTON, retractRightArmCommand, true);
+
+    // //Bumper buttons
+    // controls.bindButton(DRIVE, LB_BUTTON, intakeCargoCommand, true);
+    // controls.bindButton(DRIVE, RB_BUTTON, shootCargoCommand, true);
+
+    // //Mutlicolored buttons 
+    // controls.bindButton(DRIVE, Y_BUTTON, unclogCargoCommand, true);
+    // controls.bindButton(DRIVE, B_BUTTON, () -> this.shooterSubsystem.getSolenoid().toggle(), false);
+    // //A BUTTON HAS NO BINDING ON DRIVE CONTROLLER
+    // controls.bindButton(DRIVE, X_BUTTON, visionFindAndOrientCommand, true);
+    // controls.bindButton(DRIVE, RIGHT_STICK_BUTTON, driveSubsystem::toggleDirection, false);
+
+    // //TODO dpad buttons
+    // controls.bindButton(CLIMB, LB_BUTTON, retractLeftArmCommand, true);
+    // controls.bindButton(CLIMB, RB_BUTTON, retractRightArmCommand, true);
+
+    // //Mutlicolored buttons
+    // controls.bindButton(CLIMB, Y_BUTTON, () -> driveSubsystem.changeSpeed(0.1), false);
+    // controls.bindButton(CLIMB, X_BUTTON, () -> driveSubsystem.changeSpeed(-0.1), false);
+    // controls.bindButton(CLIMB, A_BUTTON, extendInnerArmCommand, true);
+    // //B button has NO command
+
+    // controls.bindButton(CLIMB, BACK_BUTTON, undoInnerArmCommand, true);
+    // controls.bindButton(CLIMB, START_BUTTON, shooterSubsystem::toggleSpeed, false);
+    // controls.bindButton(;
+
     Log.info("Finished configuration for button bindings. ");
   }
 
@@ -237,3 +266,4 @@ public class RobotContainer {
     }
   }
 }
+
