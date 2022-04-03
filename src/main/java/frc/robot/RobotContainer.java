@@ -34,236 +34,136 @@ import static frc.robot.Constants.Vision.CAMERA_IMG_WIDTH;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-  private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
-  private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+    // The robot's subsystems and commands are defined here...
+    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+    private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+    private final DriveSubsystem driveSubsystem = new DriveSubsystem();
 
-  private final ToggleIntakeCommand toggleIntakeCommand = new ToggleIntakeCommand(shooterSubsystem);
-  private final ShootCargoCommand shootCargoCommand = new ShootCargoCommand(shooterSubsystem);
-  private final IntakeCargoCommand intakeCargoCommand = new IntakeCargoCommand(shooterSubsystem);
-  private final UnclogCargoCommand unclogCargoCommand = new UnclogCargoCommand(shooterSubsystem);
+    private final ToggleIntakeCommand toggleIntakeCommand = new ToggleIntakeCommand(shooterSubsystem);
+    private final ShootCargoCommand shootCargoCommand = new ShootCargoCommand(shooterSubsystem);
+    private final IntakeCargoCommand intakeCargoCommand = new IntakeCargoCommand(shooterSubsystem);
+    private final UnclogCargoCommand unclogCargoCommand = new UnclogCargoCommand(shooterSubsystem);
 
-  private final ExtendInnerArmCommand extendInnerArmCommand = new ExtendInnerArmCommand(climbSubsystem);
-  private final ExtendOuterArmsCommand extendArmsCommand = new ExtendOuterArmsCommand(climbSubsystem);
+    private final ExtendInnerArmCommand extendInnerArmCommand = new ExtendInnerArmCommand(climbSubsystem);
+    private final ExtendOuterArmsCommand extendArmsCommand = new ExtendOuterArmsCommand(climbSubsystem);
 
-  private final UndoInnerArmCommand undoInnerArmCommand = new UndoInnerArmCommand(climbSubsystem);
-  private final UndoOuterArmsCommand undoOuterArmsCommand = new UndoOuterArmsCommand(climbSubsystem);
+    private final UndoInnerArmCommand undoInnerArmCommand = new UndoInnerArmCommand(climbSubsystem);
+    private final UndoOuterArmsCommand undoOuterArmsCommand = new UndoOuterArmsCommand(climbSubsystem);
 
-  private final UnlockInnerArmCommand unlockInnerArmCommand = new UnlockInnerArmCommand(climbSubsystem);
-  private final UnlockOuterArmsCommand unlockOuterArmsCommand = new UnlockOuterArmsCommand(climbSubsystem);
+    private final UnlockInnerArmCommand unlockInnerArmCommand = new UnlockInnerArmCommand(climbSubsystem);
+    private final UnlockOuterArmsCommand unlockOuterArmsCommand = new UnlockOuterArmsCommand(climbSubsystem);
 
-  private final RetractInnerArmCommand retractInnerArmCommand = new RetractInnerArmCommand(climbSubsystem);
-  private final RetractLeftArmCommand retractLeftArmCommand = new RetractLeftArmCommand(climbSubsystem);
-  private final RetractRightArmCommand retractRightArmCommand = new RetractRightArmCommand(climbSubsystem);
+    private final RetractInnerArmCommand retractInnerArmCommand = new RetractInnerArmCommand(climbSubsystem);
+    private final RetractLeftArmCommand retractLeftArmCommand = new RetractLeftArmCommand(climbSubsystem);
+    private final RetractRightArmCommand retractRightArmCommand = new RetractRightArmCommand(climbSubsystem);
 
-  private final MoveBackwardAutoCommand moveForwardCommand = new MoveBackwardAutoCommand(driveSubsystem, shooterSubsystem);
-  private final ShootLowIntakeShootCommand shootLowCommand = new ShootLowIntakeShootCommand(driveSubsystem, shooterSubsystem);
+    private final MoveBackwardAutoCommand moveForwardCommand = new MoveBackwardAutoCommand(driveSubsystem, shooterSubsystem);
+    private final ShootLowIntakeShootCommand shootLowCommand = new ShootLowIntakeShootCommand(driveSubsystem, shooterSubsystem);
 
-  //private final PneumaticsControlModule pcm = new PneumaticsControlModule(0);
+    //private final PneumaticsControlModule pcm = new PneumaticsControlModule(0);
 
-  private final XboxController shootController = new XboxController(DRIVE.ordinal());
-  private final XboxController hangController = new XboxController(CLIMB.ordinal());
+    private final XboxController shootController = new XboxController(DRIVE.ordinal());
+    private final XboxController hangController = new XboxController(CLIMB.ordinal());
 
-  private Vision vision;
-  private VisionFindAndOrientCommand visionFindAndOrientCommand;
+    private Vision vision;
+    private VisionFindAndOrientCommand visionFindAndOrientCommand;
 
-  private final SendableChooser<CommandBase> autoChooser;
+    private final SendableChooser<CommandBase> autoChooser;
 
-  private final Controls controls;
+    private final Controls controls;
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    long startTime = System.currentTimeMillis();
-    Log.info("Started robot container");
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    public RobotContainer() {
+        long startTime = System.currentTimeMillis();
+        Log.info("Started robot container");
 
-    controls = new Controls(shootController, hangController);
-    configureVision();
-    configureButtonBindings();
-    
+        controls = new Controls(shootController, hangController);
+        configureVision();
+        configureButtonBindings();
 
-    autoChooser = new SendableChooser<>();
 
-    // add SendableChooser for auto command to run
-    autoChooser.setDefaultOption("Back + High", moveForwardCommand);
-    autoChooser.addOption("Shoot Low, Intake", shootLowCommand);
+        autoChooser = new SendableChooser<>();
 
-    SmartDashboard.putString("Shooter Speed", shooterSubsystem.getShooterSpeed());
-    long currentTime = System.currentTimeMillis();
-    long duration = currentTime - startTime;
+        // add SendableChooser for auto command to run
+        autoChooser.setDefaultOption("Back + High", moveForwardCommand);
+        autoChooser.addOption("Shoot Low, Intake", shootLowCommand);
 
-    Log.info("Finished initialization for the RobotContainer class. Took " + duration + " ms to initialize.");
-  }
+        SmartDashboard.putString("Shooter Speed", shooterSubsystem.getShooterSpeed());
+        long currentTime = System.currentTimeMillis();
+        long duration = currentTime - startTime;
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses
-   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureVision() {
-    Log.info("Starting Vision configuration");
-    //Camera 1
-    CameraServer.startAutomaticCapture();
-    UsbCamera camera2 = CameraServer.startAutomaticCapture();
-    camera2.setResolution(CAMERA_IMG_WIDTH, CAMERA_IMG_HEIGHT);
-    camera2.setFPS(15);
-    // camera2.setBrightness(40);
-    camera2.setExposureManual(30);
-    vision = new Vision(camera2, driveSubsystem);
-
-    visionFindAndOrientCommand = new VisionFindAndOrientCommand(vision, driveSubsystem);
-    //Vision config finished message is sent by Vision#initVisionSystem
-  }
-
-  private void configureButtonBindings() {
-    //Configure Button Bindings Here
-    Log.info("Starting configuration for button bindings. ");
-
-    //Bind drive buttons first
-    controls.bindButton(DRIVE, LB_BUTTON, intakeCargoCommand, true);
-    controls.bindButton(DRIVE, RB_BUTTON, shootCargoCommand, true);
-    controls.bindButton(DRIVE, Y_BUTTON, unclogCargoCommand, true);
-    controls.bindButton(DRIVE, X_BUTTON, visionFindAndOrientCommand, true);
-    controls.bindButton(DRIVE, A_BUTTON, unlockInnerArmCommand, false);
-    controls.bindButton(DRIVE, B_BUTTON, toggleIntakeCommand, false);
-    controls.bindButton(DRIVE, RIGHT_STICK_BUTTON, driveSubsystem::toggleDirection, false);
-    controls.bindButton(DRIVE, LEFT_STICK_BUTTON, undoInnerArmCommand, true);
-    controls.bindButton(DRIVE, BACK_BUTTON, extendInnerArmCommand, true);
-
-    // "temporary" hack
-    controls.bindButton(DRIVE, BACK_BUTTON, ()->this.climbSubsystem.getCenterMotor().setSelectedSensorPosition(0), false);
-    controls.bindButton(DRIVE, START_BUTTON, retractInnerArmCommand, true);
-
-    //Do shooter button now
-    controls.bindButton(CLIMB, START_BUTTON, shooterSubsystem::toggleSpeed, false);
-    controls.bindButton(CLIMB, A_BUTTON, extendArmsCommand, false);
-    controls.bindButton(CLIMB, Y_BUTTON, () -> driveSubsystem.changeSpeed(0.1), false);
-    controls.bindButton(CLIMB, X_BUTTON, () -> driveSubsystem.changeSpeed(-0.1), false);
-    controls.bindButton(CLIMB, BACK_BUTTON, undoOuterArmsCommand, true);
-    controls.bindButton(CLIMB, LB_BUTTON, retractLeftArmCommand, true);
-    controls.bindButton(CLIMB, RB_BUTTON, retractRightArmCommand, true);
-
-    // //Bumper buttons
-    // controls.bindButton(DRIVE, LB_BUTTON, intakeCargoCommand, true);
-    // controls.bindButton(DRIVE, RB_BUTTON, shootCargoCommand, true);
-
-    // //Mutlicolored buttons 
-    // controls.bindButton(DRIVE, Y_BUTTON, unclogCargoCommand, true);
-    // controls.bindButton(DRIVE, B_BUTTON, () -> this.shooterSubsystem.getSolenoid().toggle(), false);
-    // //A BUTTON HAS NO BINDING ON DRIVE CONTROLLER
-    // controls.bindButton(DRIVE, X_BUTTON, visionFindAndOrientCommand, true);
-    // controls.bindButton(DRIVE, RIGHT_STICK_BUTTON, driveSubsystem::toggleDirection, false);
-
-    // //TODO dpad buttons
-    // controls.bindButton(CLIMB, LB_BUTTON, retractLeftArmCommand, true);
-    // controls.bindButton(CLIMB, RB_BUTTON, retractRightArmCommand, true);
-
-    // //Mutlicolored buttons
-    // controls.bindButton(CLIMB, Y_BUTTON, () -> driveSubsystem.changeSpeed(0.1), false);
-    // controls.bindButton(CLIMB, X_BUTTON, () -> driveSubsystem.changeSpeed(-0.1), false);
-    // controls.bindButton(CLIMB, A_BUTTON, extendInnerArmCommand, true);
-    // //B button has NO command
-
-    // controls.bindButton(CLIMB, BACK_BUTTON, undoInnerArmCommand, true);
-    // controls.bindButton(CLIMB, START_BUTTON, shooterSubsystem::toggleSpeed, false);
-    // controls.bindButton(;
-
-    Log.info("Finished configuration for button bindings. ");
-  }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return moveForwardCommand;
-  }
-
-  /**
-   * This method will never run
-   */
-  @Deprecated
-  public void teleopPeriodic() {
-    if(true) return;
-    Log.error("Old controls system called (RobotContainer#teleopPeriodic). The new system should be used instead.");
-    if (shootController.getLeftBumper())
-      intakeCargoCommand.execute();
-    if (shootController.getLeftBumperReleased())
-      intakeCargoCommand.end(false);
-
-    if (shootController.getRightBumperPressed())
-      shootCargoCommand.initialize();
-    if (shootController.getRightBumper())
-      shootCargoCommand.execute();
-    if (shootController.getRightBumperReleased())
-      shootCargoCommand.end(false);
-
-    if (shootController.getYButton())
-      unclogCargoCommand.execute();
-    if (shootController.getYButtonReleased())
-      unclogCargoCommand.end(false);
-
-    if (shootController.getXButton()) {
-      vision.findAndOrient();
+        Log.info("Finished initialization for the RobotContainer class. Took " + duration + " ms to initialize.");
     }
 
-    // if (controller.getAButtonPressed()) {
-    // climbSubsystem.runNextCommand(false);
-    // }
+    /**
+     * Use this method to define your button->command mappings. Buttons can be created by
+     * instantiating a {@link GenericHID} or one of its subclasses
+     * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
+     * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+     */
+    private void configureVision() {
+        Log.info("Starting Vision configuration");
+        //Camera 1
+        CameraServer.startAutomaticCapture();
+        UsbCamera camera2 = CameraServer.startAutomaticCapture();
+        camera2.setResolution(CAMERA_IMG_WIDTH, CAMERA_IMG_HEIGHT);
+        camera2.setFPS(15);
+        // camera2.setBrightness(40);
+        camera2.setExposureManual(30);
+        vision = new Vision(camera2, driveSubsystem);
 
-    if (shootController.getBButtonPressed()) {
-      toggleIntakeCommand.execute();
-    }
-    if (shootController.getRightStickButtonPressed()) {
-      driveSubsystem.toggleDirection();
-    }
-
-//Hang controller start
-    if (hangController.getStartButtonPressed()) {
-      shooterSubsystem.toggleSpeed();
-    }
-
-
-
-    if (hangController.getAButtonPressed()) {
-      extendArmsCommand.schedule();
-    }
-
-    if (hangController.getBButtonPressed()) {
-      retractInnerArmCommand.schedule();
+        visionFindAndOrientCommand = new VisionFindAndOrientCommand(vision, driveSubsystem);
+        //Vision config finished message is sent by Vision#initVisionSystem
     }
 
-    if (hangController.getBackButtonPressed()) {
-      undoOuterArmsCommand.schedule();
+    private void configureButtonBindings() {
+        //Configure Button Bindings Here
+        Log.info("Starting configuration for button bindings. ");
+
+
+        //Start binding drive buttons
+        //Bumper buttons
+        controls.bindButton(DRIVE, LB_BUTTON, intakeCargoCommand, true);
+        controls.bindButton(DRIVE, RB_BUTTON, shootCargoCommand, true);
+
+        //Multicolored buttons
+        controls.bindButton(DRIVE, Y_BUTTON, unclogCargoCommand, true);
+        controls.bindButton(DRIVE, B_BUTTON, toggleIntakeCommand, false);
+        //A BUTTON HAS NO BINDING ON DRIVE CONTROLLER. Most likely to be a toggle mode button
+        controls.bindButton(DRIVE, X_BUTTON, visionFindAndOrientCommand, true);
+
+        //Stick buttons
+        controls.bindButton(DRIVE, RIGHT_STICK_BUTTON, driveSubsystem::toggleDirection, false);
+
+        //Dpad buttons for the high climb
+        controls.bindPOVButton(DRIVE, DPAD_UP, extendInnerArmCommand, true);
+        controls.bindPOVButton(DRIVE, DPAD_DOWN, retractInnerArmCommand, true);
+
+
+        //Start climb controls
+        controls.bindButton(CLIMB, LB_BUTTON, retractLeftArmCommand, true);
+        controls.bindButton(CLIMB, RB_BUTTON, retractRightArmCommand, true);
+
+        //Mutlicolored buttons
+        controls.bindButton(CLIMB, Y_BUTTON, () -> driveSubsystem.changeSpeed(0.1), false);
+        controls.bindButton(CLIMB, X_BUTTON, () -> driveSubsystem.changeSpeed(-0.1), false);
+        controls.bindButton(CLIMB, A_BUTTON, extendArmsCommand, true);
+        //B button has NO command
+
+        controls.bindButton(CLIMB, BACK_BUTTON, undoOuterArmsCommand, true);
+        controls.bindButton(CLIMB, START_BUTTON, shooterSubsystem::toggleSpeed, false);
+
+        //Dpad buttons for the mid-climb
+        controls.bindPOVButton(CLIMB, DPAD_UP, unlockInnerArmCommand, true);
+        controls.bindPOVButton(CLIMB, DPAD_DOWN, unlockOuterArmsCommand, true);
+
+        Log.info("Finished configuration for button bindings. ");
     }
 
-    if (hangController.getLeftBumper()) {
-      climbSubsystem.getLeftMotor().set(0.45);
+    public Command getAutonomousCommand() {
+        return moveForwardCommand;
     }
-    if (hangController.getLeftBumperReleased()) {
-      climbSubsystem.getLeftMotor().set(0);
-    }
-
-    if (hangController.getRightBumper()) {
-      climbSubsystem.getRightMotor().set(0.45);
-    }
-    if (hangController.getRightBumperReleased()) {
-      climbSubsystem.getRightMotor().set(0);
-    }
-
-    if (hangController.getLeftBumperPressed() || hangController.getRightBumperPressed()) {
-      // climbSubsystem.getCenterSolenoid().set(true);
-    }
-
-    if (hangController.getXButton()) {
-      driveSubsystem.changeSpeed(0.1);
-    }
-    if (hangController.getYButton()) {
-      driveSubsystem.changeSpeed(-0.1);
-    }
-  }
 }
 

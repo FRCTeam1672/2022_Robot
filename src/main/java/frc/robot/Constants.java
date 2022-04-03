@@ -82,6 +82,11 @@ public final class Constants {
 
             public static final int LEFT_STICK_BUTTON = 9;
             public static final int RIGHT_STICK_BUTTON = 10;
+
+            public static final int DPAD_UP = 0;
+            public static final int DPAD_DOWN = 180;
+            public static final int DPAD_LEFT = 270;
+            public static final int DPAD_RIGHT = 90;
         }
     }
 
