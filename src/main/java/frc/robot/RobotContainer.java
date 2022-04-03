@@ -16,6 +16,7 @@ import frc.robot.commands.auto.MoveBackwardAutoCommand;
 import frc.robot.commands.auto.VisionFindAndOrientCommand;
 import frc.robot.commands.climb.*;
 import frc.robot.commands.shooter.*;
+import frc.robot.controls.Controls;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -125,40 +126,53 @@ public class RobotContainer {
 
         //Start binding drive buttons
         //Bumper buttons
-        controls.bindButton(DRIVE, LB_BUTTON, intakeCargoCommand, true);
-        controls.bindButton(DRIVE, RB_BUTTON, shootCargoCommand, true);
+        controls.bindButton(DRIVE, LB_BUTTON, intakeCargoCommand, true, 1);
+        controls.bindButton(DRIVE, RB_BUTTON, shootCargoCommand, true, 1);
 
         //Multicolored buttons
-        controls.bindButton(DRIVE, Y_BUTTON, unclogCargoCommand, true);
-        controls.bindButton(DRIVE, B_BUTTON, toggleIntakeCommand, false);
-        //A BUTTON HAS NO BINDING ON DRIVE CONTROLLER. Most likely to be a toggle mode button
-        controls.bindButton(DRIVE, X_BUTTON, visionFindAndOrientCommand, true);
+        controls.bindButton(DRIVE, Y_BUTTON, unclogCargoCommand, true, 1);
+        controls.bindButton(DRIVE, B_BUTTON, toggleIntakeCommand, false, 1);
+        //Add toggle mode button for mode 1
+        controls.bindButton(DRIVE, A_BUTTON, () -> {
+            controls.removeBindings();
+            controls.setDriveMode(2);
+        }, false, 1);
+        //Add toggle mode button for mode 2
+        controls.bindButton(DRIVE, A_BUTTON, () -> {
+            controls.removeBindings();
+            controls.setDriveMode(1);
+        }, false, 2);
+
+        controls.bindButton(DRIVE, X_BUTTON, visionFindAndOrientCommand, true, 1);
 
         //Stick buttons
-        controls.bindButton(DRIVE, RIGHT_STICK_BUTTON, driveSubsystem::toggleDirection, false);
+        controls.bindButton(DRIVE, RIGHT_STICK_BUTTON, driveSubsystem::toggleDirection, false, 1);
 
         //Dpad buttons for the high climb
-        controls.bindPOVButton(DRIVE, DPAD_UP, extendInnerArmCommand, true);
-        controls.bindPOVButton(DRIVE, DPAD_DOWN, retractInnerArmCommand, true);
+        controls.bindPOVButton(DRIVE, DPAD_UP, extendInnerArmCommand, true, 1);
+        controls.bindPOVButton(DRIVE, DPAD_DOWN, retractInnerArmCommand, true, 1);
+
 
 
         //Start climb controls
-        controls.bindButton(CLIMB, LB_BUTTON, retractLeftArmCommand, true);
-        controls.bindButton(CLIMB, RB_BUTTON, retractRightArmCommand, true);
+        controls.bindButton(CLIMB, LB_BUTTON, retractLeftArmCommand, true, 1);
+        controls.bindButton(CLIMB, RB_BUTTON, retractRightArmCommand, true, 1);
 
         //Mutlicolored buttons
-        controls.bindButton(CLIMB, Y_BUTTON, () -> driveSubsystem.changeSpeed(0.1), false);
-        controls.bindButton(CLIMB, X_BUTTON, () -> driveSubsystem.changeSpeed(-0.1), false);
-        controls.bindButton(CLIMB, A_BUTTON, extendArmsCommand, true);
+        controls.bindButton(CLIMB, Y_BUTTON, () -> driveSubsystem.changeSpeed(0.1), false, 1);
+        controls.bindButton(CLIMB, X_BUTTON, () -> driveSubsystem.changeSpeed(-0.1), false, 1);
+        controls.bindButton(CLIMB, A_BUTTON, extendArmsCommand, true, 1);
         //B button has NO command
 
-        controls.bindButton(CLIMB, BACK_BUTTON, undoOuterArmsCommand, true);
-        controls.bindButton(CLIMB, START_BUTTON, shooterSubsystem::toggleSpeed, false);
+        controls.bindButton(CLIMB, BACK_BUTTON, undoOuterArmsCommand, true, 1);
+        controls.bindButton(CLIMB, START_BUTTON, shooterSubsystem::toggleSpeed, false, 1);
 
         //Dpad buttons for the mid-climb
-        controls.bindPOVButton(CLIMB, DPAD_UP, unlockInnerArmCommand, true);
-        controls.bindPOVButton(CLIMB, DPAD_DOWN, unlockOuterArmsCommand, true);
+        controls.bindPOVButton(CLIMB, DPAD_UP, unlockInnerArmCommand, true, 1);
+        controls.bindPOVButton(CLIMB, DPAD_DOWN, unlockOuterArmsCommand, true, 1);
 
+
+        //TODO Add mode 2 button bindings
         Log.info("Finished configuration for button bindings. ");
     }
 

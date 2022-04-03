@@ -79,7 +79,6 @@ public class Vision {
                 pipeline.filterContoursOutput().forEach(matOfPoint -> {
                     Rect r = Imgproc.boundingRect(matOfPoint);
                     synchronized (imgLock) {
-                        Log.debug(r.y + " ");
                         double recCenter = r.x + r.width / 2.0;
                         if (r.y > CONTOUR_MIN_Y/* && r.y<CONTOUR_MAX_Y*/) {
                             rectangleCenters.add(recCenter);
@@ -95,7 +94,6 @@ public class Vision {
                     Point point2 = new Point(recCenter + 2, y + 2);
                     Imgproc.rectangle(cloneMat, point1, point2, color, 3);
                 }
-                System.out.println();
                 double averageCenter = DerogatoryMathUtils.getAverage(rectangleCenters);
                 double averageY = DerogatoryMathUtils.getAverage(rectangleYs);
                 synchronized (imgLock) {
