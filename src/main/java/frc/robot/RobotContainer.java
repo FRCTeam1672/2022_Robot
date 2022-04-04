@@ -171,8 +171,10 @@ public class RobotContainer {
         controls.bindPOVButton(CLIMB, DPAD_UP, unlockInnerArmCommand, true, 1);
         controls.bindPOVButton(CLIMB, DPAD_DOWN, unlockOuterArmsCommand, true, 1);
 
-
         //TODO Add mode 2 button bindings
+        
+        controls.setDriveMode(1);
+        controls.setClimbMode(1);
         Log.info("Finished configuration for button bindings. ");
     }
 
