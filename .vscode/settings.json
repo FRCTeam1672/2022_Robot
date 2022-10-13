@@ -29,6 +29,5 @@
   ],
   "java.test.defaultConfig": "WPIlibUnitTests",
   "java.format.settings.url": "google-formatter.xml",
-  "java.format.settings.profile": "GoogleStyle",
-  "editor.formatOnSave": true
+  "java.format.settings.profile": "GoogleStyle"
 }
