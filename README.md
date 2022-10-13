@@ -1,3 +1,5 @@
-# Ishaan Branch
+# Team 1672 Rapid React Code
 
-Please see Vision.MD to see details on the Vision system
+This branch contains an experimental configuration where we try to implement "mode-switching", by pressing a button on the controller, which will change it to other commands that we can use.
+
+This has not been tested, although it will probably work. 
